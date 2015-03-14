@@ -46,10 +46,24 @@ $(document).ready(
 						runner_data += "<td>" + this.name + "</td>";
 						runner_data += "<td>" + resolve_category(this.category) + "</td>";
 						
+						$.ajax({
+							type : "GET",
+							url : api + "time?runner=" + this.id,
+							async: false,
+							success : function(times) {
+								$.each(times, function() {
+									runner_data += "<td>" + this.time + "</td>";
+								});
+							}
+						});
+						
 						tableTimes.append(runner_data);
 					});
 				}
 			});
+			
+			
+			
 			
 			
 
