@@ -5,6 +5,7 @@ $(document).ready(function() {
 
 	// selectors
 	var tableHeaderSelector = "#table-header th:last";
+	var tableTimesSelector = "#table-times"
 
 	// populate table headers with the aid-station codes
 	var tableHeader = $(tableHeaderSelector);
@@ -18,5 +19,17 @@ $(document).ready(function() {
 			});
 		}
 	});
+	
+	//list all runners
+	var tableTimes = $(tableTimesSelector);
+	$.ajax({
+		type : "GET",
+		url : api + "runners",
+		success : function(runners) {
+			$.each(runners, function() {
+				tableTimes.append("<tr>" + "<td>" + this.id + "</td>" + "<td>" + this.name + "</td>" + "</tr>");
+			});
+		}
+			});
 
-});
+		});
