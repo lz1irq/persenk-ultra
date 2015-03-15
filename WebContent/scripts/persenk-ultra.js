@@ -1,5 +1,23 @@
 var api = "http://private-43da-persenkultra.apiary-mock.com/"
 
+var categories = [];
+
+function get_categories() {
+	var category_name = "";
+	$.ajax({
+		type : "GET",
+		url : api + "categories",
+		async : false,
+		success : function(categories) {
+			console.log(categories);
+			$.each(categories, function() {
+				categories[this.id] = this.name;
+				console.log(categories[this.id]);
+			})
+		}
+	});
+}
+
 function resolve_category(category_id) {
 	var category_name = "";
 	$.ajax({
@@ -9,7 +27,7 @@ function resolve_category(category_id) {
 		success : function(category) {
 			category_name = category.short_name;
 		}
-	})
+	});
 	return category_name;
 }
 
@@ -24,7 +42,7 @@ function add_runner(table, runner) {
 function add_runner_times(table, row, runner_id) {
 	$.ajax({
 		type : "GET",
-		url : api + "time?runner=" + this.id,
+		url : api + "time?runner=" + runner_id,
 		success : function(times) {
 			$.each(times, function() {
 				row.append($("<td/>").text(this.time));
@@ -35,58 +53,59 @@ function add_runner_times(table, row, runner_id) {
 
 }
 
-$(document).ready(
-		function() {
-			"use strict"
+$(document).ready(function() {
+	"use strict"
 
-			// selectors
-			var tableHeaderSelector = "#table-header th:last";
-			var tableTimesSelector = "#table-times"
+	// selectors
+	var tableHeaderSelector = "#table-header th:last";
+	var tableTimesSelector = "#table-times"
 
-			// populate table headers with the aid-station codes
-			var tableHeader = $(tableHeaderSelector);
-			$.ajax({
-				type : "GET",
-				url : api + "station",
-				success : function(aid_stations) {
-					$.each(aid_stations, function() {
-						tableHeader.after("<th>" + "A" + this.id + "</th>");
-						tableHeader = $(tableHeaderSelector);
-					});
-				}
+	get_categories();
+
+	// populate table headers with the aid-station codes
+	var tableHeader = $(tableHeaderSelector);
+	$.ajax({
+		type : "GET",
+		url : api + "station",
+		success : function(aid_stations) {
+			$.each(aid_stations, function() {
+				tableHeader.after("<th>" + "A" + this.id + "</th>");
+				tableHeader = $(tableHeaderSelector);
 			});
+		}
+	});
 
-			// list all runners
-			var tableTimes = $(tableTimesSelector);
-			$.ajax({
-				type : "GET",
-				url : api + "runners",
-				success : function(runners) {
-					$.each(runners, function() {
-						add_runner(tableTimes, this); 	
-					});
-				}
+	// list all runners
+	var tableTimes = $(tableTimesSelector);
+	$.ajax({
+		type : "GET",
+		url : api + "runners",
+		success : function(runners) {
+			$.each(runners, function() {
+				add_runner(tableTimes, this);
 			});
+		}
+	});
 
-			var btnAddRunner = $("#btn-add-runner");
-			btnAddRunner.click(function() {
+	var btnAddRunner = $("#btn-add-runner");
+	btnAddRunner.click(function() {
 
-				var runner = {
-					name : $("#add-runner-name").val(),
-					category : 1
-				};
+		var runner = {
+			name : $("#add-runner-name").val(),
+			category : 1
+		};
 
-				$.ajax({
-					type : "POST",
-					contentType : "application/json",
-					url : api + "runners",
-					data : runner,
-					success : function(data, textStatus, jQxhr) {
-						console.log(data);
-						add_runner(tableTimes, data);
-					},
-
-				});
-			})
+		$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url : api + "runners",
+			data : runner,
+			success : function(data, textStatus, jQxhr) {
+				console.log(data);
+				add_runner(tableTimes, data);
+			},
 
 		});
+	})
+
+});
