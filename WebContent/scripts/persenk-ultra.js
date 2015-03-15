@@ -66,6 +66,9 @@ function add_runner_times(table, row, runner_id) {
 			});
 			
 			table.append(row);
+			$('table').trigger('update');
+			var sorting = [[0,0]];
+			$('table').trigger('sorton',[sorting]);
 		}
 	});
 
@@ -74,6 +77,9 @@ function add_runner_times(table, row, runner_id) {
 $(document).ready(function() {
 	'use strict'
 
+	
+	
+	
 	// selectors
 	var tableHeaderSelector = '#table-header th:last';
 	var tableTimesSelector = '#table-times'
@@ -91,9 +97,15 @@ $(document).ready(function() {
 				tableHeader.after('<th>' + 'A' + this.id + '</th>');
 				tableHeader = $(tableHeaderSelector);
 			});
+			
+			$('table').tablesorter({
+				widgets: ['zebra']
+			});
 		}
 	});
 
+	
+	
 	// list all runners
 	var tableTimes = $(tableTimesSelector);
 	$.ajax({
@@ -108,6 +120,8 @@ $(document).ready(function() {
 			});
 		}
 	});
+	
+	
 
 	// adding a runner
 	var btnAddRunner = $('#btn-add-runner');
@@ -136,9 +150,15 @@ $(document).ready(function() {
 		});
 	})
 
+	
+	
 	$('.dropdown-menu li a').click(function() {
 		var selText = $(this).text();
 		$('#dropdownCategory').html(selText + ' <span class="caret"></span>');
 	});
+	
+	
+	
+	
 
 });
