@@ -40,6 +40,7 @@ function fill_categories() {
 function add_runner(table, runner) {
 	var row = $('<tr/>');
 	row.attr('id', runner.id);
+	row.attr('class', 'editable-time');
 	row.append($('<td/>').text(runner.id));
 	row.append($('<td/>').text(runner.name));
 	row.append($('<td/>').text(categories[runner.category].short_name));
@@ -57,18 +58,16 @@ function add_runner_times(table, row, runner_id) {
 				timeCell.attr('id', runner_id + "-" + this.id);
 				timeCell.text(this.time);
 				
-				timeCell.click(function() {
-					alert(timeCell.attr('id'));
-				});
+				timeCell.editable();
 				
 				row.append(timeCell);
-				
+
 			});
-			
+
 			table.append(row);
 			$('table').trigger('update');
-			var sorting = [[0,0]];
-			$('table').trigger('sorton',[sorting]);
+			var sorting = [ [ 0, 0 ] ];
+			$('table').trigger('sorton', [ sorting ]);
 		}
 	});
 
@@ -77,9 +76,6 @@ function add_runner_times(table, row, runner_id) {
 $(document).ready(function() {
 	'use strict'
 
-	
-	
-	
 	// selectors
 	var tableHeaderSelector = '#table-header th:last';
 	var tableTimesSelector = '#table-times'
@@ -97,14 +93,12 @@ $(document).ready(function() {
 				tableHeader.after('<th>' + 'A' + this.id + '</th>');
 				tableHeader = $(tableHeaderSelector);
 			});
-			
-			$('table').tablesorter({
-				widgets: ['zebra']
-			});
+
+			$('table').tablesorter();
 		}
 	});
 
-	
+	//$.fn.editable.defaults.mode = 'inline';
 	
 	// list all runners
 	var tableTimes = $(tableTimesSelector);
@@ -112,7 +106,7 @@ $(document).ready(function() {
 		type : 'GET',
 		url : api + 'runners',
 		success : function(runner_array) {
-			runner_array.sort(function(a,b) {
+			runner_array.sort(function(a, b) {
 				return a.id - b.id;
 			});
 			$.each(runner_array, function() {
@@ -120,8 +114,6 @@ $(document).ready(function() {
 			});
 		}
 	});
-	
-	
 
 	// adding a runner
 	var btnAddRunner = $('#btn-add-runner');
@@ -150,15 +142,9 @@ $(document).ready(function() {
 		});
 	})
 
-	
-	
 	$('.dropdown-menu li a').click(function() {
 		var selText = $(this).text();
 		$('#dropdownCategory').html(selText + ' <span class="caret"></span>');
 	});
-	
-	
-	
-	
 
 });
