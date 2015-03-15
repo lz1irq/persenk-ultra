@@ -39,11 +39,34 @@ function fill_categories() {
 
 function add_runner(table, runner) {
 	var row = $('<tr/>');
-	row.attr('id', runner.id);
-	row.attr('class', 'editable-time');
+	
+	row.attr('data-runner', runner.id);
 	row.append($('<td/>').text(runner.id));
-	row.append($('<td/>').text(runner.name));
+	
+	var nameCell = $('<td/>').text(runner.name);
+	nameCell.editable({
+		send : 'always',
+		type : 'text',
+		url : api + 'posts/' + runner.id,
+		pk : 0,
+		id : 0,
+
+		ajaxOptions : {
+			type : 'PUT',
+			url : api + 'runners/' + runner.id,
+		},
+		data : {
+			"id" : runner.id,
+			"name" : runner.name,
+			"category" : runner.category
+		}
+	});
+	
+	row.append(nameCell);
 	row.append($('<td/>').text(categories[runner.category].short_name));
+	
+	
+	
 	add_runner_times(table, row, runner.id);
 }
 
@@ -55,11 +78,33 @@ function add_runner_times(table, row, runner_id) {
 		success : function(times) {
 			$.each(times, function() {
 				var timeCell = $('<td/>');
-				timeCell.attr('id', runner_id + "-" + this.id);
+				timeCell.attr('data-time-id', this.id);
+				timeCell.attr('data-station', this.station)
 				timeCell.text(this.time);
-				
-				timeCell.editable();
-				
+
+				var thisTime = this;
+
+				timeCell.editable({
+					send : 'always',
+					type : 'text',
+					url : api + 'time/' + thisTime.id,
+					pk : 0,
+					id : 0,
+
+					ajaxOptions : {
+						type : 'PUT',
+						url : api + 'time/' + thisTime.id,
+					},
+					data : {
+						"runner" : thisTime.runner,
+						"station" : thisTime.station,
+						"time" : 0,
+					},
+					success : function(response, newValue) {
+						console.log(newValue);
+					}
+				});
+
 				row.append(timeCell);
 
 			});
@@ -75,6 +120,9 @@ function add_runner_times(table, row, runner_id) {
 
 $(document).ready(function() {
 	'use strict'
+
+	// library setup
+	$.fn.editable.defaults.mode = 'inline';
 
 	// selectors
 	var tableHeaderSelector = '#table-header th:last';
@@ -93,13 +141,11 @@ $(document).ready(function() {
 				tableHeader.after('<th>' + 'A' + this.id + '</th>');
 				tableHeader = $(tableHeaderSelector);
 			});
-
-			$('table').tablesorter();
 		}
 	});
 
-	//$.fn.editable.defaults.mode = 'inline';
-	
+	// $.fn.editable.defaults.mode = 'inline';
+
 	// list all runners
 	var tableTimes = $(tableTimesSelector);
 	$.ajax({
@@ -112,6 +158,7 @@ $(document).ready(function() {
 			$.each(runner_array, function() {
 				add_runner(tableTimes, this);
 			});
+			$('table').tablesorter();
 		}
 	});
 
