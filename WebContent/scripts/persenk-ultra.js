@@ -30,16 +30,36 @@ function get_category_id(cat_name) {
 }
 
 function fill_categories() {
+	$('.dropdown-menu').empty();
+	
 	$.each(categories, function() {
 		$('.dropdown-menu').append(
 				'<li role="presentation"><a role="menuitem" tabindex="-1" href="#">'
 						+ this.name + '</a></li>');
 	})
+	
+	$('.dropdown-menu li a').click(function() {
+		var selText = $(this).text();
+		$('#dropdownCategory').html(selText + ' <span class="caret"></span>');
+	});
 }
 
 function add_runner(table, runner) {
 	var row = $('<tr/>');
 
+	var del = $('<td/>').html('<span class="glyphicon glyphicon-remove"></span>');
+	del.click(function() {
+		$.ajax({
+			type : 'DELETE',
+			url : api + 'runners/' + runner.id,
+			success : function(response) {
+				row.remove();
+			}
+		});
+	})
+	row.append(del);
+	
+	
 	row.attr('data-runner', runner.id);
 	row.append($('<td/>').text(runner.id));
 
@@ -163,7 +183,6 @@ $(document).ready(function() {
 	// adding a runner
 	var btnAddRunner = $('#btn-add-runner');
 	btnAddRunner.click(function() {
-
 		var runner = {
 			name : $('#add-runner-name').val(),
 			category : 1
@@ -187,18 +206,33 @@ $(document).ready(function() {
 		});
 	})
 
-	$('.dropdown-menu li a').click(function() {
-		var selText = $(this).text();
-		$('#dropdownCategory').html(selText + ' <span class="caret"></span>');
-	});
+	
 	
 	$("#search-field").keyup(function() {
         var value = this.value.toLowerCase().trim();
 
         $("#table-times").find("tr").each(function(index) {
-            var id = $(this).find("td").eq(1).text().toLowerCase().trim();
+            var id = $(this).find("td").eq(2).text().toLowerCase().trim();
             $(this).toggle(id.indexOf(value) !== -1);
         });
     });
+	
+	$('#btn-add-category').click(function() {
+		$.ajax({
+			type : 'POST',
+			contentType : 'application/json',
+			url : api + 'categories',
+			data : {
+				name : $('#add-category-name').val(),
+				short_name : $('#add-category-short-name').val()
+			},
+			success : function(data, textStatus, jQxhr) {
+				categories[data.id] = data;
+				console.log(data);
+				fill_categories();
+			},
+
+		});
+	})
 	
 });
