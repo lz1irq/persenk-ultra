@@ -1,52 +1,70 @@
-var api = "http://private-43da-persenkultra.apiary-mock.com/"
+var api = 'http://private-43da-persenkultra.apiary-mock.com/'
 
 var categories = [];
 
 function get_categories() {
-	var category_name = "";
+	var category_name = '';
 	$.ajax({
-		type : "GET",
-		url : api + "categories",
+		type : 'GET',
+		url : api + 'categories',
 		async : false,
-		success : function(categories) {
-			console.log(categories);
-			$.each(categories, function() {
-				categories[this.id] = this.name;
-				console.log(categories[this.id]);
+		success : function(cats) {
+			cats.sort(function(a, b) {
+				return a.id - b.id;
+			})
+			$.each(cats, function() {
+				categories[this.id] = this;
 			})
 		}
 	});
 }
 
-function resolve_category(category_id) {
-	var category_name = "";
-	$.ajax({
-		type : "GET",
-		url : api + "categories/" + category_id,
-		async : false,
-		success : function(category) {
-			category_name = category.short_name;
+function get_category_id(cat_name) {
+	var cat_id = -1;
+	$.each(categories, function() {
+		if (this.name == cat_name) {
+			cat_id = this.id;
 		}
-	});
-	return category_name;
+	})
+	return cat_id;
+}
+
+function fill_categories() {
+	$.each(categories, function() {
+		$('.dropdown-menu').append(
+				'<li role="presentation"><a role="menuitem" tabindex="-1" href="#">'
+						+ this.name + '</a></li>');
+	})
 }
 
 function add_runner(table, runner) {
-	var row = $("<tr/>");
-	row.append($("<td/>").text(runner.id));
-	row.append($("<td/>").text(runner.name));
-	row.append($("<td/>").text(resolve_category(runner.category)));
+	var row = $('<tr/>');
+	row.attr('id', runner.id);
+	row.append($('<td/>').text(runner.id));
+	row.append($('<td/>').text(runner.name));
+	row.append($('<td/>').text(categories[runner.category].short_name));
 	add_runner_times(table, row, runner.id);
 }
 
 function add_runner_times(table, row, runner_id) {
+	console.log(runner_id);
 	$.ajax({
-		type : "GET",
-		url : api + "time?runner=" + runner_id,
+		type : 'GET',
+		url : api + 'time?runner=' + runner_id,
 		success : function(times) {
 			$.each(times, function() {
-				row.append($("<td/>").text(this.time));
+				var timeCell = $('<td/>');
+				timeCell.attr('id', runner_id + "-" + this.id);
+				timeCell.text(this.time);
+				
+				timeCell.click(function() {
+					alert(timeCell.attr('id'));
+				});
+				
+				row.append(timeCell);
+				
 			});
+			
 			table.append(row);
 		}
 	});
@@ -54,22 +72,23 @@ function add_runner_times(table, row, runner_id) {
 }
 
 $(document).ready(function() {
-	"use strict"
+	'use strict'
 
 	// selectors
-	var tableHeaderSelector = "#table-header th:last";
-	var tableTimesSelector = "#table-times"
+	var tableHeaderSelector = '#table-header th:last';
+	var tableTimesSelector = '#table-times'
 
 	get_categories();
+	fill_categories();
 
 	// populate table headers with the aid-station codes
 	var tableHeader = $(tableHeaderSelector);
 	$.ajax({
-		type : "GET",
-		url : api + "station",
+		type : 'GET',
+		url : api + 'station',
 		success : function(aid_stations) {
 			$.each(aid_stations, function() {
-				tableHeader.after("<th>" + "A" + this.id + "</th>");
+				tableHeader.after('<th>' + 'A' + this.id + '</th>');
 				tableHeader = $(tableHeaderSelector);
 			});
 		}
@@ -78,34 +97,48 @@ $(document).ready(function() {
 	// list all runners
 	var tableTimes = $(tableTimesSelector);
 	$.ajax({
-		type : "GET",
-		url : api + "runners",
-		success : function(runners) {
-			$.each(runners, function() {
+		type : 'GET',
+		url : api + 'runners',
+		success : function(runner_array) {
+			runner_array.sort(function(a,b) {
+				return a.id - b.id;
+			});
+			$.each(runner_array, function() {
 				add_runner(tableTimes, this);
 			});
 		}
 	});
 
-	var btnAddRunner = $("#btn-add-runner");
+	// adding a runner
+	var btnAddRunner = $('#btn-add-runner');
 	btnAddRunner.click(function() {
 
 		var runner = {
-			name : $("#add-runner-name").val(),
+			name : $('#add-runner-name').val(),
 			category : 1
 		};
 
 		$.ajax({
-			type : "POST",
-			contentType : "application/json",
-			url : api + "runners",
+			type : 'POST',
+			contentType : 'application/json',
+			url : api + 'runners',
 			data : runner,
 			success : function(data, textStatus, jQxhr) {
-				console.log(data);
-				add_runner(tableTimes, data);
+				$.ajax({
+					type : 'GET',
+					url : api + 'runners/' + data.id,
+					success : function(new_runner) {
+						add_runner(tableTimes, new_runner);
+					}
+				});
 			},
 
 		});
 	})
+
+	$('.dropdown-menu li a').click(function() {
+		var selText = $(this).text();
+		$('#dropdownCategory').html(selText + ' <span class="caret"></span>');
+	});
 
 });
