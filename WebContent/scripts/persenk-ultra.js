@@ -39,10 +39,10 @@ function fill_categories() {
 
 function add_runner(table, runner) {
 	var row = $('<tr/>');
-	
+
 	row.attr('data-runner', runner.id);
 	row.append($('<td/>').text(runner.id));
-	
+
 	var nameCell = $('<td/>').text(runner.name);
 	nameCell.editable({
 		send : 'always',
@@ -61,12 +61,10 @@ function add_runner(table, runner) {
 			"category" : runner.category
 		}
 	});
-	
+
 	row.append(nameCell);
 	row.append($('<td/>').text(categories[runner.category].short_name));
-	
-	
-	
+
 	add_runner_times(table, row, runner.id);
 }
 
@@ -193,5 +191,14 @@ $(document).ready(function() {
 		var selText = $(this).text();
 		$('#dropdownCategory').html(selText + ' <span class="caret"></span>');
 	});
+	
+	$("#search-field").keyup(function() {
+        var value = this.value.toLowerCase().trim();
 
+        $("#table-times").find("tr").each(function(index) {
+            var id = $(this).find("td").eq(1).text().toLowerCase().trim();
+            $(this).toggle(id.indexOf(value) !== -1);
+        });
+    });
+	
 });
