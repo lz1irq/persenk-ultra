@@ -37,11 +37,11 @@ public class Runner {
 		this.name = name;
 	}
 
-	public Category getCategoryId() {
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategoryId(Category category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 }
