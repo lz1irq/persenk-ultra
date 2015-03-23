@@ -29,15 +29,15 @@ public class RunnerService {
 		return runner;
 	}
 	
-	public Runner updateRunner(Runner runner) {
+	public Runner updateRunner(long runnerId, Runner runner) {
 		Runner oldRunner = getRunner(runner.getId());
 		oldRunner.setCategory(runner.getCategory());
 		oldRunner.setName(runner.getName());
 		return oldRunner;
 	}
 	
-	public void deleteRunner(Runner runner) {
-		final Runner toDelete = getRunner(runner.getId());
+	public void deleteRunner(long runnerId) {
+		final Runner toDelete = getRunner(runnerId);
 		runners.remove(toDelete);
 	}
 
