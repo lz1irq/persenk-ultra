@@ -14,12 +14,7 @@ public class Runner {
 	private String name;
 	
 	@Column(nullable=false)
-	private Category category;
-	
-	public Runner(String name, Category category) {
-		this.name = name;
-		this.category = category;
-	}
+	private int categoryId;
 
 	public long getId() {
 		return id;
@@ -37,11 +32,11 @@ public class Runner {
 		this.name = name;
 	}
 
-	public Category getCategory() {
-		return category;
+	public int getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(int category) {
+		this.categoryId = category;
 	}
 }
