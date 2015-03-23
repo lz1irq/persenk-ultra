@@ -2,6 +2,7 @@ package com.persenkultra.times.rest;
 
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -48,6 +49,13 @@ public class RunnerRest {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Runner updateRunner(@PathParam("runnerId") long runnerId, Runner runner) {
 		return runnerService.updateRunner(runnerId, runner);
+	}
+	
+	@DELETE
+	@Path("/{runnerId}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public void deleteRunner(@PathParam("runnerId") long runnerId) {
+		runnerService.deleteRunner(runnerId);
 	}
 	
 	
