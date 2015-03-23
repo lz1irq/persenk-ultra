@@ -8,25 +8,20 @@ public class AidStation {
 	
 	@Id
 	@GeneratedValue
-	private int id;
+	private long id;
 	
 	@Column(nullable=false, length=50)
 	private String name;
 	
 	@Column(nullable=false)
 	private int distance;
-	
-	public AidStation(String name, int distance) {
-		this.name = name;
-		this.distance = distance;
-	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(long lastAidStationId) {
+		this.id = lastAidStationId;
 	}
 
 	public String getName() {
