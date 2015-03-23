@@ -4,6 +4,7 @@ public class Services {
 	private static RunnerService runnerService;
 	private static AidStationService aidStationService;
 	private static TimeEntryService timeEntryService;
+	private static CategoryService categoryService;
 	
 	public synchronized static RunnerService getRunnerService() {
 		if(runnerService == null) {
@@ -24,5 +25,12 @@ public class Services {
 			timeEntryService = new TimeEntryService();
 		}
 		return timeEntryService;
+	}
+	
+	public synchronized static CategoryService getCategoryService() {
+		if(categoryService == null) {
+			categoryService = new CategoryService();
+		}
+		return categoryService;
 	}
 }
