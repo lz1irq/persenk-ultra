@@ -2,7 +2,8 @@ package com.persenkultra.times.service;
 
 public class Services {
 	private static RunnerService runnerService;
-	private static AidStationService stationService;
+	private static AidStationService aidStationService;
+	private static TimeEntryService timeEntryService;
 	
 	public synchronized static RunnerService getRunnerService() {
 		if(runnerService == null) {
@@ -12,9 +13,16 @@ public class Services {
 	}
 	
 	public synchronized static AidStationService getAidStationService() {
-		if(stationService == null) {
-			stationService = new AidStationService();
+		if(aidStationService == null) {
+			aidStationService = new AidStationService();
 		}
-		return stationService;
+		return aidStationService;
+	}
+	
+	public synchronized static TimeEntryService getTimeEntryService() {
+		if(timeEntryService == null) {
+			timeEntryService = new TimeEntryService();
+		}
+		return timeEntryService;
 	}
 }

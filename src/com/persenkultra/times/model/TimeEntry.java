@@ -11,7 +11,16 @@ public class TimeEntry {
 	@Id
 	@GeneratedValue
 	private long id;
-	
+
+	@Column(nullable = false)
+	private long runnerId;
+
+	@Column(nullable = false)
+	private long stationId;
+
+	@Column(nullable = false)
+	private Date time;
+
 	public long getId() {
 		return id;
 	}
@@ -20,20 +29,20 @@ public class TimeEntry {
 		this.id = id;
 	}
 
-	public Runner getRunner() {
-		return runner;
+	public long getRunnerId() {
+		return runnerId;
 	}
 
-	public void setRunner(Runner runner) {
-		this.runner = runner;
+	public void setRunnerId(long runnerId) {
+		this.runnerId = runnerId;
 	}
 
-	public AidStation getStation() {
-		return station;
+	public long getStationId() {
+		return stationId;
 	}
 
-	public void setStation(AidStation station) {
-		this.station = station;
+	public void setStationId(long stationId) {
+		this.stationId = stationId;
 	}
 
 	public Date getTime() {
@@ -44,17 +53,4 @@ public class TimeEntry {
 		this.time = time;
 	}
 
-	@Column(nullable = false)
-	private Runner runner;
-	
-	@Column(nullable = false)
-	private AidStation station;
-	
-	@Column(nullable = false)
-	private Date time;
-	
-	public TimeEntry(AidStation station, Date time) {
-		this.station = station;
-		this.time = time;
-	}
 }
