@@ -30,10 +30,10 @@ public class RunnerService {
 	}
 	
 	public Runner updateRunner(long runnerId, Runner runner) {
-		Runner oldRunner = getRunner(runner.getId());
-		oldRunner.setCategoryId(runner.getCategoryId());
-		oldRunner.setName(runner.getName());
-		return oldRunner;
+		Runner toChange = getRunner(runnerId);
+		toChange.setCategoryId(runner.getCategoryId());
+		toChange.setName(runner.getName());
+		return toChange;
 	}
 	
 	public void deleteRunner(long runnerId) {
