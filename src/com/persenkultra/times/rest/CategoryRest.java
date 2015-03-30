@@ -2,6 +2,7 @@ package com.persenkultra.times.rest;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -40,6 +41,7 @@ public class CategoryRest {
 	@POST
 	@Path("/")
 	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
 	public Category createCategory(Category category) {
 		return categoryService.createCategory(category);
 	}
@@ -47,6 +49,7 @@ public class CategoryRest {
 	@PUT
 	@Path("/{categoryId}")
 	@Produces({ MediaType.APPLICATION_JSON })
+	//@Consumes({ MediaType.APPLICATION_JSON })
 	public Category updateCategory(@PathParam("categoryId") long categoryId, Category category) {
 		return categoryService.updateCategory(categoryId, category);
 	}
