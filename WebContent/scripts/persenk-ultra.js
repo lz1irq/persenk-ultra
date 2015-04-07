@@ -1,72 +1,31 @@
-var api = 'http://localhost:8080/persenk-ultra/api/'
+var apiURL = 'http://localhost:8080/persenk-ultra/api/';
 
-var categories = [];
+var persenkUltraServices = angular.module('persenkUltraServices', [ 'ngResource' ]);
 
-function getCategories() {
-	$.ajax({
-		method : 'GET',
-		url : api + 'categories'
-	}).success(function(data, status, jqXHR) {
-		categories.splice(0, categories.length); // clear the array
-		$.each(data, function(index, category) {
-			categories.push(category);
-		});
+persenkUltraServices.factory('AidStation', function($resource) {
+	return $resource(apiURL + 'stations/', {}, {
+		'query' : {
+			method : 'GET',
+			isArray : true
+		}
 	});
-}
+})
 
-function listRunners() {
-	$.ajax({
-		method : 'GET',
-		url : api + 'runners',
-	}).success(function(data, status, jqXHR) {
-		$.each(data, function(index, runner) {
-			displayRunner(runner);
-		});
-	});
-}
-
-function displayRunner(runner) {
-	var newRunner = $('<tr/>');
-	newRunner.attr('data-runner-id', runner.id);
-
-	// actions
-	var runnerActions = $('<td/>');
-
-	var deleteButton = $('<button/>').addClass('btn btn-defauappendlt');
-	deleteButton.click(function() {
-		deleteRunner(runner);
-	});
-	deleteButton.append($('<span/>').addClass('glyphicon glyphicon-remove'));
-	runnerActions.append(deleteButton);
-	newRunner.append(runnerActions);
-
-	newRunner.append($('<td/>').text(runner.name));
-	newRunner.append($('<td/>').text(runner.categoryId));
-
-	$('#runners-list').append(newRunner);
-}
-
-function deleteRunner(runner) {
-
-	var confirmMessage = "Are you sure you want to delete runner "
-			+ runner.name + " ?";
-	var confirmDelete = confirm(confirmMessage);
-
-	if (confirmDelete) {
-		$.ajax({
-			method : 'DELETE',
-			url : api + 'runners/' + runner.id,
-		}).success(function(data, status, jqXHR) {
-			if (status == 'nocontent') {
-				$('tr[data-runner-id=' + runnerId + ']').remove();
-			}
-		});
-	}
-}
-
-$(document).ready(function() {
-	'use strict'
-
-	listRunners();
-
+persenkUltraServices.factory('Runners', function($resource) {
+	return $resource(apiURL + 'runners/', {}, {
+		'query' : {
+			method : 'GET',
+			isArray : true
+		}
+	})
 });
+
+var persenkUltraControllers = angular.module('persenkUltra', [ 'persenkUltraServices' ]);
+
+persenkUltraControllers.controller('AidStationController', [ '$scope', 'AidStation', function($scope, AidStation) {
+	$scope.aidStations = AidStation.query();
+} ]);
+
+persenkUltraControllers.controller('RunnerController', ['$scope', 'Runners', function($scope, Runners) {
+	$scope.runners = Runners.query();
+} ]);
