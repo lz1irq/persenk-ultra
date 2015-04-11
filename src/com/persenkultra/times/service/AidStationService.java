@@ -3,42 +3,90 @@ package com.persenkultra.times.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
 import com.persenkultra.times.model.AidStation;
 
 public class AidStationService {
-	private final List<AidStation> stations = new ArrayList<AidStation>();
-	private long lastAidStationId = 0;
+	private final EntityManagerFactory emf;
+
+	public AidStationService() {
+		emf = Services.getEntityManagerFactory();
+	}
 
 	public List<AidStation> getAidStations() {
-		return stations;
+		final EntityManager em = emf.createEntityManager();
+		try {
+			return em.createNamedQuery("allAidStations", AidStation.class).getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	public AidStation getAidStation(long stationId) {
-		for (AidStation station : stations) {
-			if (station.getId() == stationId) {
-				return station;
-			}
+		final EntityManager em = emf.createEntityManager();
+		try {
+			return em.find(AidStation.class, stationId);
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 
 	public synchronized AidStation createAidStation(AidStation station) {
-		lastAidStationId++;
-		station.setId(lastAidStationId);
-		stations.add(station);
-		return station;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			em.persist(station);
+			tx.commit();
+			return station;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
-	
+
 	public AidStation updateAidStation(long stationId, AidStation station) {
-		AidStation toChange = getAidStation(stationId);
-		toChange.setName(station.getName());
-		toChange.setDistance(station.getDistance());
-		return toChange;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			final AidStation fromDb = em.find(AidStation.class, stationId);
+			if (fromDb != null) {
+				fromDb.setName(station.getName());
+				fromDb.setDistance(station.getDistance());
+				em.merge(fromDb);
+			}
+			tx.commit();
+			return fromDb;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
-	
+
 	public void deleteAidStation(long stationId) {
-		final AidStation toDelete = getAidStation(stationId);
-		stations.remove(toDelete);
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			final AidStation fromDb = em.find(AidStation.class, stationId);
+			if (fromDb != null) {
+				em.remove(fromDb);
+			}
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 
 }

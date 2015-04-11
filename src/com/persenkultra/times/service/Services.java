@@ -1,10 +1,15 @@
 package com.persenkultra.times.service;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 public class Services {
 	private static RunnerService runnerService;
 	private static AidStationService aidStationService;
 	private static TimeEntryService timeEntryService;
 	private static CategoryService categoryService;
+	
+	private static EntityManagerFactory entityManagerFactory;
 	
 	public synchronized static RunnerService getRunnerService() {
 		if(runnerService == null) {
@@ -32,5 +37,20 @@ public class Services {
 			categoryService = new CategoryService();
 		}
 		return categoryService;
+	}
+
+	
+	public synchronized static EntityManagerFactory getEntityManagerFactory() {
+		// lazy loading
+		if (entityManagerFactory == null) {
+			try {
+				Class.forName("org.apache.derby.jdbc.ClientDriver");
+			} catch (ClassNotFoundException e) {
+				throw new IllegalStateException("No driver", e);
+			}
+			entityManagerFactory = Persistence
+					.createEntityManagerFactory("persenk-ultra");
+		}
+		return entityManagerFactory;
 	}
 }

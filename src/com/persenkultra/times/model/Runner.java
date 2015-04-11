@@ -28,12 +28,6 @@ public class Runner {
 	@Column(nullable = false, length = 50)
 	private String name;
 
-	@OneToOne
-	@Column(nullable = false)
-	private Category category;
-
-	@OneToMany(mappedBy = "runner")
-	private List<TimeEntry> times = new LinkedList<TimeEntry>();
 
 	public long getId() {
 		return id;
@@ -51,11 +45,4 @@ public class Runner {
 		this.name = name;
 	}
 
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
 }

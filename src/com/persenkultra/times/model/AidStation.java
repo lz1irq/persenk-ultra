@@ -4,8 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 @Entity(name = "AidStations")
+@NamedQueries({@NamedQuery(name = "allAidStations", query = "SELECT a from AidStations a")})
 public class AidStation {
 
 	@Id

@@ -15,13 +15,6 @@ public class TimeEntry {
 	@GeneratedValue
 	private long id;
 
-	@ManyToOne
-	@Column(nullable = false)
-	private Runner runner;
-
-	@Column(nullable = false)
-	private AidStation aidStation;
-
 	@Column(nullable = false)
 	private Date time;
 
@@ -31,22 +24,6 @@ public class TimeEntry {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public Runner getRunner() {
-		return runner;
-	}
-
-	public void setRunner(Runner runner) {
-		this.runner = runner;
-	}
-
-	public AidStation getAidStation() {
-		return aidStation;
-	}
-
-	public void setAidStation(AidStation aidStation) {
-		this.aidStation = aidStation;
 	}
 
 	public Date getTime() {
