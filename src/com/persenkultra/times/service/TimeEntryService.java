@@ -3,42 +3,90 @@ package com.persenkultra.times.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
+import com.persenkultra.times.model.AidStation;
 import com.persenkultra.times.model.TimeEntry;
 
 public class TimeEntryService {
-	private final List<TimeEntry> timeEntries = new ArrayList<TimeEntry>();
-	private long lastTimeEntryId = 0;
+	private final EntityManagerFactory emf;
+	
+	public TimeEntryService() {
+		emf = Services.getEntityManagerFactory();
+	}
 
 	public List<TimeEntry> getTimeEntries() {
-		return timeEntries;
+		final EntityManager em = emf.createEntityManager();
+		try {
+			return em.createNamedQuery("allTimeEntries", TimeEntry.class).getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	public TimeEntry getTimeEntry(long timeEntryId) {
-		for (TimeEntry timeEntry : timeEntries) {
-			if (timeEntry.getId() == timeEntryId) {
-				return timeEntry;
-			}
+		final EntityManager em = emf.createEntityManager();
+		try {
+			return em.find(TimeEntry.class, timeEntryId);
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 
 	public synchronized TimeEntry createTimeEntry(TimeEntry timeEntry) {
-		lastTimeEntryId++;
-		timeEntry.setId(lastTimeEntryId);
-		timeEntries.add(timeEntry);
-		return timeEntry;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			em.persist(timeEntry);
+			tx.commit();
+			return timeEntry;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 	
 	public TimeEntry updateTimeEntry(long timeEntryId, TimeEntry timeEntry) {
-		TimeEntry toChange = getTimeEntry(timeEntryId);
-		toChange.setAidStation(timeEntry.getAidStation());
-		toChange.setTime(timeEntry.getTime());
-		return toChange;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			final TimeEntry fromDb = em.find(TimeEntry.class, timeEntry);
+			if (fromDb != null) {
+				fromDb.setTime(timeEntry.getTime());
+				em.merge(fromDb);
+			}
+			tx.commit();
+			return fromDb;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 	
 	public void deleteTimeEntry(long timeEntryId) {
-		final TimeEntry toDelete = getTimeEntry(timeEntryId);
-		timeEntries.remove(toDelete);
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			final TimeEntry fromDb = em.find(TimeEntry.class, timeEntryId);
+			if (fromDb != null) {
+				em.remove(fromDb);
+			}
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 
 }
