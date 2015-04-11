@@ -3,42 +3,91 @@ package com.persenkultra.times.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+
+import com.persenkultra.times.model.Category;
 import com.persenkultra.times.model.Runner;
 
 public class RunnerService {
-	private final List<Runner> runners = new ArrayList<Runner>();
-	private long lastRunnerId = 0;
+	private final EntityManagerFactory emf;
 
+	public RunnerService() {
+		emf = Services.getEntityManagerFactory();
+	}
+	
 	public List<Runner> getRunners() {
-		return runners;
+		final EntityManager em = emf.createEntityManager();
+		try {
+			return em.createNamedQuery("allRunners", Runner.class).getResultList();
+		} finally {
+			em.close();
+		}
 	}
 
 	public Runner getRunner(long runnerId) {
-		for (Runner runner : runners) {
-			if (runner.getId() == runnerId) {
-				return runner;
-			}
+		final EntityManager em = emf.createEntityManager();
+		try {
+			return em.find(Runner.class, runnerId);
+		} finally {
+			em.close();
 		}
-		return null;
 	}
 
 	public synchronized Runner createRunner(Runner runner) {
-		lastRunnerId++;
-		runner.setId(lastRunnerId);
-		runners.add(runner);
-		return runner;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			em.persist(runner);
+			tx.commit();
+			return runner;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
-	
+
 	public Runner updateRunner(long runnerId, Runner runner) {
-		Runner toChange = getRunner(runnerId);
-		toChange.setCategory(runner.getCategory());
-		toChange.setName(runner.getName());
-		return toChange;
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			final Runner fromDb = em.find(Runner.class, runnerId);
+			if (fromDb != null) {
+				fromDb.setName(runner.getName());
+				fromDb.setCategory(runner.getCategory());
+				em.merge(fromDb);
+			}
+			tx.commit();
+			return fromDb;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
-	
+
 	public void deleteRunner(long runnerId) {
-		final Runner toDelete = getRunner(runnerId);
-		runners.remove(toDelete);
+		EntityManager em = emf.createEntityManager();
+		final EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			final Runner fromDb = em.find(Runner.class, runnerId);
+			if (fromDb != null) {
+				em.remove(fromDb);
+			}
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
 	}
 
 }

@@ -10,18 +10,23 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.persenkultra.times.model.Category;
 import com.persenkultra.times.model.Runner;
+import com.persenkultra.times.service.CategoryService;
 import com.persenkultra.times.service.RunnerService;
 import com.persenkultra.times.service.Services;
 
 @Path("runners")
 public class RunnerRest {
 	private final RunnerService runnerService;
+	private final CategoryService categoryService;
 
 	public RunnerRest() {
 		runnerService = Services.getRunnerService();
+		categoryService = Services.getCategoryService();
 	}
 
 	@GET
@@ -42,7 +47,7 @@ public class RunnerRest {
 	@Path("/")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Runner createRunner(Runner runner) {
+	public Runner createRunner(@QueryParam("categoryId") long categoryId, Runner runner) {
 		return runnerService.createRunner(runner);
 	}
 

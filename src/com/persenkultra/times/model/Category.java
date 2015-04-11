@@ -1,11 +1,18 @@
 package com.persenkultra.times.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
-@Entity(name = "Category")
+@Entity(name = "Categories")
+@NamedQueries({@NamedQuery(name = "allCategories", query = "SELECT c from Categories c")})
 public class Category {
 
 	@Id
@@ -17,6 +24,9 @@ public class Category {
 
 	@Column(nullable = false)
 	private String shortName;
+	
+	@OneToMany(mappedBy="category")
+	private List<Runner> runners = new LinkedList<Runner>();	
 
 	public long getId() {
 		return id;
