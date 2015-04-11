@@ -1,19 +1,21 @@
 package com.persenkultra.times.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@Entity(name = "AidStations")
 public class AidStation {
-	
+
 	@Id
 	@GeneratedValue
 	private long id;
-	
-	@Column(nullable=false, length=50)
+
+	@Column(nullable = false, length = 50)
 	private String name;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private int distance;
 
 	public long getId() {

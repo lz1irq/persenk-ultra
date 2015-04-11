@@ -31,7 +31,7 @@ public class RunnerService {
 	
 	public Runner updateRunner(long runnerId, Runner runner) {
 		Runner toChange = getRunner(runnerId);
-		toChange.setCategoryId(runner.getCategoryId());
+		toChange.setCategory(runner.getCategory());
 		toChange.setName(runner.getName());
 		return toChange;
 	}

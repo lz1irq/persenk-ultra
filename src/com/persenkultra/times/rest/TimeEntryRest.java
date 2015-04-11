@@ -12,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.persenkultra.times.model.TimeEntry;
-import com.persenkultra.times.model.TimeEntry;
 import com.persenkultra.times.service.Services;
 import com.persenkultra.times.service.TimeEntryService;
 

@@ -31,8 +31,8 @@ public class TimeEntryService {
 	
 	public TimeEntry updateTimeEntry(long timeEntryId, TimeEntry timeEntry) {
 		TimeEntry toChange = getTimeEntry(timeEntryId);
-		toChange.setRunnerId(timeEntry.getRunnerId());
-		toChange.setStationId(timeEntry.getStationId());
+		toChange.setRunner(timeEntry.getRunner());
+		toChange.setAidStation(timeEntry.getAidStation());
 		toChange.setTime(timeEntry.getTime());
 		return toChange;
 	}

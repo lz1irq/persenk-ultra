@@ -1,20 +1,39 @@
 package com.persenkultra.times.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+@Entity(name = "Runner")
 public class Runner {
-	
+
+	public List<TimeEntry> getTimes() {
+		return times;
+	}
+
+	public void setTimes(List<TimeEntry> times) {
+		this.times = times;
+	}
+
 	@Id
 	@GeneratedValue
 	private long id;
-	
-	@Column(nullable=false, length=50)
+
+	@Column(nullable = false, length = 50)
 	private String name;
-	
-	@Column(nullable=false)
-	private int categoryId;
+
+	@OneToOne
+	@Column(nullable = false)
+	private Category category;
+
+	@OneToMany(mappedBy = "runner")
+	private List<TimeEntry> times = new LinkedList<TimeEntry>();
 
 	public long getId() {
 		return id;
@@ -32,11 +51,11 @@ public class Runner {
 		this.name = name;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(int category) {
-		this.categoryId = category;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 }
