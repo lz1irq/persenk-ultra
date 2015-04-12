@@ -1,16 +1,18 @@
 package com.persenkultra.times.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity(name = "Runners")
 @NamedQueries({@NamedQuery(name = "allRunners", query = "SELECT r from Runners r")})
 public class Runner {
@@ -24,6 +26,9 @@ public class Runner {
 
 	@ManyToOne
 	private Category category;
+	
+	@OneToMany(mappedBy="runner", fetch=FetchType.EAGER)
+	private List<TimeEntry> times = new LinkedList<TimeEntry>();
 
 	public long getId() {
 		return id;
@@ -47,6 +52,14 @@ public class Runner {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public List<TimeEntry> getTimes() {
+		return times;
+	}
+
+	public void setTimes(List<TimeEntry> times) {
+		this.times = times;
 	}
 
 }

@@ -20,7 +20,10 @@ public class TimeEntry {
 
 	@Column(nullable = false)
 	private Date time;
-
+		
+	@ManyToOne
+	private Runner runner;
+	
 	public long getId() {
 		return id;
 	}
@@ -35,6 +38,14 @@ public class TimeEntry {
 
 	public void setTime(Date time) {
 		this.time = time;
+	}
+	
+	public Runner getRunner() {
+		return runner;
+	}
+
+	public void setRunner(Runner runner) {
+		this.runner = runner;
 	}
 
 }
