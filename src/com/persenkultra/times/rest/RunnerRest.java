@@ -47,7 +47,10 @@ public class RunnerRest {
 	@Path("/")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Runner createRunner(@QueryParam("categoryId") long categoryId, Runner runner) {
+	public Runner createRunner(Runner runner) {
+		long categoryId = runner.getCategory().getId();
+		Category newCategory = categoryService.getCategory(categoryId);
+		runner.setCategory(newCategory);
 		return runnerService.createRunner(runner);
 	}
 

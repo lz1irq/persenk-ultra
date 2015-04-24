@@ -1,6 +1,6 @@
 package com.persenkultra.times.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+
+import org.apache.derby.client.am.DateTime;
 
 @Entity(name = "TimeEntries")
 @NamedQueries({@NamedQuery(name = "allTimeEntries", query = "SELECT te from TimeEntries te")})
@@ -19,7 +21,7 @@ public class TimeEntry {
 	private long id;
 
 	@Column(nullable = false)
-	private Date time;
+	private Timestamp time;
 		
 	@ManyToOne
 	private Runner runner;
@@ -32,11 +34,11 @@ public class TimeEntry {
 		this.id = id;
 	}
 
-	public Date getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 
-	public void setTime(Date time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 	
