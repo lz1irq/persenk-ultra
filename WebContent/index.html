@@ -96,7 +96,8 @@
 					<tbody id="runners-list" ng-controller='RunnerController'>
 						<tr ng-repeat='runner in runners'>
 							<td> {{runner.name}} </td>
-							<td> {{runner.categoryId}} </td>
+							<td> {{runner.category.shortName}} </td>
+							<td ng-repeat="timeEntry in runner.times"> {{timeEntry.time | date: 'medium'}} </td>
 						<tr>
 					</tbody>
 				</table>
