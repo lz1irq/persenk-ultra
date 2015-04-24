@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity(name = "Runners")
 @NamedQueries({@NamedQuery(name = "allRunners", query = "SELECT r from Runners r")})

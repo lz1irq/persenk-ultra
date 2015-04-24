@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.derby.client.am.DateTime;
 
@@ -23,7 +24,7 @@ public class TimeEntry {
 	@Column(nullable = false)
 	private Timestamp time;
 		
-	@ManyToOne
+	@ManyToOne()
 	private Runner runner;
 	
 	public long getId() {
@@ -42,6 +43,7 @@ public class TimeEntry {
 		this.time = time;
 	}
 	
+	@XmlTransient
 	public Runner getRunner() {
 		return runner;
 	}
