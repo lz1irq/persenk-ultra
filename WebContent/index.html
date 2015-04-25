@@ -88,16 +88,16 @@
 
 					<thead ng-controller="AidStationController">
 						<tr id="runners-header">
-							<td> <b> Name </b> </td>
-							<td> <b> Category </b> </td>
-							<td ng-repeat="aidStation in aidStations"> <b> {{ aidStation.name }} </b> </td>
+							<td align="center"> <b> Name </b> </td>
+							<td align="center"> <b> Category </b> </td>
+							<td align="center" ng-repeat="aidStation in aidStations"> <b> {{ aidStation.name }} </b> </td>
 						</tr>
 					</thead>
 					<tbody id="runners-list" ng-controller='RunnerController'>
 						<tr ng-repeat='runner in runners'>
-							<td> {{runner.name}} </td>
-							<td> {{runner.category.shortName}} </td>
-							<td ng-repeat="timeEntry in runner.times"> {{timeEntry.time | date: 'medium'}} </td>
+							<td align="center"> {{runner.name}} </td>
+							<td align="center"> {{runner.category.shortName}} </td>
+							<td align="center" ng-repeat="timeEntry in runner.times"> {{timeEntry.time | date: 'medium'}} </td>
 						<tr>
 					</tbody>
 				</table>
