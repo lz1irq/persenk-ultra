@@ -19,7 +19,18 @@ persenkUltraServices.factory('RunnerFactory', [ '$http', function($http) {
 	return this;
 } ]);
 
-var persenkUltra = angular.module('persenkUltra', [ 'persenkUltraServices' ]);
+var persenkUltra = angular.module('persenkUltra', [ 'ngRoute', 'persenkUltraServices' ]);
+persenkUltra.config(['$routeProvider', 
+    function($routeProvider) {
+		$routeProvider.
+		when('/table', {
+			templateUrl: 'views/table.html'
+		}).
+		otherwise({
+			redirectTo: '/table'
+		});
+	}                 
+]);
 
 persenkUltra.controller('AidStationController', [ '$scope', 'AidStationFactory', function($scope, AidStationFactory) {
 

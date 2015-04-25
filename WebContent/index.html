@@ -58,51 +58,9 @@
 	</nav>
 
 	<div class="container">
-
-		<div class="panel panel-primary" id="add-runner-panel">
-			<div class="panel-heading">Add a Runner</div>
-
-			<div class="panel-body">
-				<div class="col-md-5">
-					<input type="text" class="form-control" placeholder="Runner name" id="new-runner-name">
-				</div>
-
-				<button class="btn btn-primary" id="add-runner-button">Add</button>
-
-			</div>
-		</div>
-
-
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Runners</h3>
-				<div class="btn-group">
-					<button class="btn" id="add-runner-toggle">
-						<span class="glyphicon glyphicon-plus"></span>
-					</button>
-				</div>
-			</div>
-
-			<div class="panel-body">
-				<table class="table table-striped">
-
-					<thead ng-controller="AidStationController">
-						<tr id="runners-header">
-							<td align="center"> <b> Name </b> </td>
-							<td align="center"> <b> Category </b> </td>
-							<td align="center" ng-repeat="aidStation in aidStations"> <b> {{ aidStation.name }} </b> </td>
-						</tr>
-					</thead>
-					<tbody id="runners-list" ng-controller='RunnerController'>
-						<tr ng-repeat='runner in runners'>
-							<td align="center"> {{runner.name}} </td>
-							<td align="center"> {{runner.category.shortName}} </td>
-							<td align="center" ng-repeat="timeEntry in runner.times"> {{timeEntry.time | date: 'medium'}} </td>
-						<tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
+		
+		<div ng-view></div>
+		
 	</div>
 
 	 
