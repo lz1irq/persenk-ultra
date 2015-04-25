@@ -1,31 +1,54 @@
+"use strict"
 var apiURL = 'http://localhost:8080/persenk-ultra/api/';
 
 var persenkUltraServices = angular.module('persenkUltraServices', [ 'ngResource' ]);
 
-persenkUltraServices.factory('AidStation', function($resource) {
-	return $resource(apiURL + 'stations/', {}, {
-		'query' : {
-			method : 'GET',
-			isArray : true
-		}
-	});
-})
+persenkUltraServices.factory('AidStationFactory', [ '$http', function($http) {
+	this.getAidStations = function() {
+		return $http.get(apiURL + 'stations');
+	};
 
-persenkUltraServices.factory('Runners', function($resource) {
-	return $resource(apiURL + 'runners/', {}, {
-		'query' : {
-			method : 'GET',
-			isArray : true
-		}
-	})
-});
-
-var persenkUltraControllers = angular.module('persenkUltra', [ 'persenkUltraServices' ]);
-
-persenkUltraControllers.controller('AidStationController', [ '$scope', 'AidStation', function($scope, AidStation) {
-	$scope.aidStations = AidStation.query();
+	return this;
 } ]);
 
-persenkUltraControllers.controller('RunnerController', ['$scope', 'Runners', function($scope, Runners) {
-	$scope.runners = Runners.query();
+persenkUltraServices.factory('RunnerFactory', [ '$http', function($http) {
+	this.getRunners = function() {
+		return $http.get(apiURL + 'runners');
+	}
+	
+	return this;
+} ]);
+
+var persenkUltra = angular.module('persenkUltra', [ 'persenkUltraServices' ]);
+
+persenkUltra.controller('AidStationController', [ '$scope', 'AidStationFactory', function($scope, AidStationFactory) {
+
+	$scope.getAidStations = function() {
+		AidStationFactory.getAidStations()
+		.success(function(stations) {
+			$scope.aidStations = stations;
+		}).error(function(errorMessage) {
+			console.log(errorMessage);
+			$scope.status = "Unable to load aid station data: " + errorMessage;
+		});
+	}
+
+	$scope.getAidStations();
+
+} ]);
+
+persenkUltra.controller('RunnerController', [ '$scope', 'RunnerFactory', function($scope, RunnerFactory) {
+	$scope.getRunners = function() {
+		RunnerFactory.getRunners()
+		.success(function(runners) {
+			$scope.runners = runners;
+		})
+		.error(function(errorMessage) {
+			console.log(errorMessage);
+			$scope.status = "Unable to load aid station data: " + errorMessage;
+		});
+	}
+	
+	$scope.getRunners();
+
 } ]);
