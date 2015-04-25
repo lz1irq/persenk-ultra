@@ -26,11 +26,23 @@ persenkUltra.config(['$routeProvider',
 		when('/table', {
 			templateUrl: 'views/table.html'
 		}).
+		when('/admin', {
+			templateUrl: 'views/admin.html'
+		}).
+		when('/about', {
+			templateUrl: 'views/about.html'
+		}).
 		otherwise({
 			redirectTo: '/table'
 		});
 	}                 
 ]);
+
+persenkUltra.controller('HeaderController', ['$scope', '$location', function($scope, $location) {
+	$scope.isActive = function (viewLocation) { 
+        return viewLocation === $location.path();
+    };
+}]);
 
 persenkUltra.controller('AidStationController', [ '$scope', 'AidStationFactory', function($scope, AidStationFactory) {
 
