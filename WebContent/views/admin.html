@@ -1,1 +1,31 @@
-in progress
+<div data-ng-controller="adminUIController">
+
+  <accordion close-others="oneAtATime">
+  
+    <accordion-group heading="Aid Stations" is-open="status.aidStationsOpen">
+    	<accordion-heading>
+        	Aid Stations
+        	<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.aidStationsOpen, 'glyphicon-chevron-right': !status.aidStationsOpen}"></i>
+        </accordion-heading>
+      
+    </accordion-group>
+    
+    <accordion-group is-open="status.categoriesOpen" heading="Dynamic Body Content">
+    	<accordion-heading>
+              Categories
+              <i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.categoriesOpen, 'glyphicon-chevron-right': !status.categoriesOpen}"></i>
+        </accordion-heading>
+     
+    </accordion-group>
+    
+    <accordion-group is-open="status.open">
+        <accordion-heading>
+            Runners 
+			<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </accordion-heading>
+       
+    </accordion-group>
+    
+  </accordion>
+  
+  </div>

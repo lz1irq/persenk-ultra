@@ -1,28 +1,23 @@
-		<div class="panel panel-primary">
+		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">Runners</h3>
-				<div class="btn-group">
-					<button class="btn" id="add-runner-toggle">
-						<span class="glyphicon glyphicon-plus"></span>
-					</button>
-				</div>
 			</div>
 
 			<div class="panel-body">
 				<table class="table table-striped">
 
-					<thead ng-controller="AidStationController">
+					<thead data-ng-controller="AidStationController">
 						<tr id="runners-header">
 							<td align="center"> <b> Name </b> </td>
 							<td align="center"> <b> Category </b> </td>
-							<td align="center" ng-repeat="aidStation in aidStations"> <b> {{ aidStation.name }} </b> </td>
+							<td align="center" data-ng-repeat="aidStation in aidStations"> <b> {{ aidStation.name }} </b> </td>
 						</tr>
 					</thead>
-					<tbody id="runners-list" ng-controller='RunnerController'>
-						<tr ng-repeat='runner in runners'>
+					<tbody id="runners-list" data-ng-controller="RunnerController">
+						<tr data-ng-repeat='runner in runners'>
 							<td align="center"> {{runner.name}} </td>
 							<td align="center"> {{runner.category.shortName}} </td>
-							<td align="center" ng-repeat="timeEntry in runner.times"> {{timeEntry.time | date: 'd.MM HH:mm'}} </td>
+							<td align="center" data-ng-repeat="timeEntry in runner.times"> {{timeEntry.time | date: 'd.MM HH:mm'}} </td>
 						<tr>
 					</tbody>
 				</table>
