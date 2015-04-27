@@ -4,8 +4,15 @@ var apiURL = '/persenk-ultra/api/';
 var persenkUltraServices = angular.module('persenkUltraServices', [ 'ngResource' ]);
 
 persenkUltraServices.factory('AidStationFactory', [ '$http', function($http) {
+	
+	var baseURL = apiURL + 'stations/';
+	
 	this.getAidStations = function() {
-		return $http.get(apiURL + 'stations');
+		return $http.get(baseURL);
+	};
+	
+	this.deleteAidStation = function(aidStationId) {
+		return $http.delete(baseURL + aidStationId);
 	};
 
 	return this;
@@ -42,6 +49,8 @@ persenkUltra.controller('HeaderController', [ '$scope', '$location', function($s
 
 persenkUltra.controller('AidStationController', [ '$scope', 'AidStationFactory', function($scope, AidStationFactory) {
 
+	$scope.aidStations = [];
+	
 	$scope.getAidStations = function() {
 		AidStationFactory.getAidStations().success(function(stations) {
 			$scope.aidStations = stations;
@@ -49,6 +58,16 @@ persenkUltra.controller('AidStationController', [ '$scope', 'AidStationFactory',
 			console.log(errorMessage);
 			$scope.status = "Unable to load aid station data: " + errorMessage;
 		});
+	}
+	
+	$scope.deleteAidStation = function(aidStationId) {
+		for(var index=0;index < $scope.aidStations.length;index++) {
+			if($scope.aidStations[index].id === aidStationId) {
+				$scope.aidStations.splice(index, 1);
+				break;
+			}
+		}
+		AidStationFactory.deleteAidStation(aidStationId);
 	}
 
 	$scope.getAidStations();
