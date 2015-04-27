@@ -26,11 +26,10 @@ persenkUltra.controller('CategoryController', [ '$scope', 'CategoryFactory', fun
 	$scope.categories = [];
 			
 	$scope.getCategories = function() {
-		CategoryFactory.getCategories().success(function(stations) {
-			$scope.categories = stations;
+		CategoryFactory.getCategories().success(function(categories) {
+			$scope.categories = categories;
 		}).error(function(errorMessage) {
 			console.log(errorMessage);
-			$scope.status = "Unable to load aid station data: " + errorMessage;
 		});
 	}
 	
@@ -46,7 +45,6 @@ persenkUltra.controller('CategoryController', [ '$scope', 'CategoryFactory', fun
 	
 	$scope.createCategory = function(category) {
 		CategoryFactory.createCategory(category).success(function(newStation) {
-			console.log(newStation);
 			$scope.categories.push(category);
 
 		}).error(function(errorMessage) {

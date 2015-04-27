@@ -30,7 +30,6 @@ persenkUltra.controller('AidStationController', [ '$scope', 'AidStationFactory',
 			$scope.aidStations = stations;
 		}).error(function(errorMessage) {
 			console.log(errorMessage);
-			$scope.status = "Unable to load aid station data: " + errorMessage;
 		});
 	}
 	
