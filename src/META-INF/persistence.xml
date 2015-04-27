@@ -7,11 +7,12 @@
 		<class>com.persenkultra.times.model.Category</class>
 		<class>com.persenkultra.times.model.Runner</class>
 		<class>com.persenkultra.times.model.TimeEntry</class>
+		<class>com.persenkultra.times.model.User</class>
 		<exclude-unlisted-classes></exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
-			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="javax.persistence.jdbc.user" value="persenk" />
 			<property name="javax.persistence.jdbc.password" value="persenk" />
 			<property name="javax.persistence.jdbc.url"
