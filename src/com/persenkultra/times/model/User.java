@@ -52,7 +52,7 @@ public class User {
 		this.username = username;
 	}
 
-	@XmlTransient
+	
 	public String getPassword() {
 		return password;
 	}
