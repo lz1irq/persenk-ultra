@@ -8,8 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement
 @Entity(name="Users")
 @NamedQueries({@NamedQuery(name="allUsers", query="SELECT u FROM Users u")})
 public class User {
@@ -21,6 +23,7 @@ public class User {
 	@Column(nullable = false, length = 50)
 	private String username;
 	
+	@XmlTransient
 	@Column(nullable = false, length = 50)
 	private String password;
 	
