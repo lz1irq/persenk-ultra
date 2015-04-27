@@ -18,6 +18,8 @@ persenkUltra.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/about.html'
 	}).when('/contacts', {
 		redirectTo : '/about'
+	}).when('/login', {
+		templateUrl : 'views/login.html'
 	}).otherwise({
 		redirectTo : '/table'
 	});
