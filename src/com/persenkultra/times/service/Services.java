@@ -8,8 +8,16 @@ public class Services {
 	private static AidStationService aidStationService;
 	private static TimeEntryService timeEntryService;
 	private static CategoryService categoryService;
+	private static UserService userService;
 	
 	private static EntityManagerFactory entityManagerFactory;
+	
+	public synchronized static UserService getUserService() {
+		if(userService == null) {
+			userService = new UserService();
+		}
+		return userService;
+	}
 	
 	public synchronized static RunnerService getRunnerService() {
 		if(runnerService == null) {
