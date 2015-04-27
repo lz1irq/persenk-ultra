@@ -13,6 +13,10 @@ persenkUltraServices.factory('AidStationFactory', [ '$http', function($http) {
 	this.createAidStation = function(aidStation) {
 		return $http.post(stationURL, aidStation);
 	}
+	
+	this.updateAidStation = function(aidStation) {
+		return $http.put(stationURL + aidStation.id, aidStation);
+	}
 
 	return this;
 } ]);
@@ -48,6 +52,10 @@ persenkUltra.controller('AidStationController', [ '$scope', 'AidStationFactory',
 		}).error(function(errorMessage) {
 			console.log(errorMessage);
 		});
+	}
+	
+	$scope.updateAidStation = function(aidStation) {
+		AidStationFactory.updateAidStation(aidStation);
 	}
 
 	$scope.getAidStations();

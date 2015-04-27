@@ -3,7 +3,11 @@ var apiURL = '/persenk-ultra/api/';
 
 var persenkUltraServices = angular.module('persenkUltraServices', [ 'ngResource' ]);
 
-var persenkUltra = angular.module('persenkUltra', [ 'ngRoute', 'persenkUltraServices', 'ui.bootstrap' ]);
+var persenkUltra = angular.module('persenkUltra', [ 'ngRoute', 'persenkUltraServices', 'ui.bootstrap', 'xeditable' ]);
+
+persenkUltra.run(function(editableOptions) {
+	  editableOptions.theme = 'bs3';
+	});
 
 persenkUltra.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/table', {

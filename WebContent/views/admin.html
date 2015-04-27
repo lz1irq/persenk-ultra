@@ -28,6 +28,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
+					<td align="center"><b>#</b>
 					<td align="center"><b> Aid Station </b></td>
 					<td align="center"><b> Distance </b></td>
 					<td align="center"><b> Actions </b></td>
@@ -36,10 +37,11 @@
 
 			<tbody>
 				<tr data-ng-repeat="aidStation in aidStations">
-					<td align="center">{{ aidStation.name }}</td>
-					<td align="center">{{ aidStation.distance }}</td>
+					<td align="center"> <b> </b> {{$index+1}}</td>
+					<td align="center"> <a href="" data-editable-text="aidStation.name" data-onaftersave="updateAidStation(aidStation)"> {{ aidStation.name }} </a></td>
+					<td align="center"> <a href="" data-editable-text="aidStation.distance" data-onaftersave="updateAidStation(aidStation)"> {{ aidStation.distance }} </a></td>
 					<td align="center">
-						<button class="btn btn-default" ng-click="deleteAidStation(aidStation.id)">
+						<button class="btn btn-default" data-ng-click="deleteAidStation(aidStation.id)">
 							<span class="glyphicon glyphicon-trash"></span>
 						</button>
 					</td>
