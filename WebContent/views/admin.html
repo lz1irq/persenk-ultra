@@ -1,53 +1,51 @@
 <div data-ng-controller="adminUIController">
 
-  <accordion close-others="oneAtATime">
-  
-    <accordion-group heading="Aid Stations" is-open="status.aidStationsOpen">
-    	<accordion-heading>
-        	Aid Stations
-        	<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.aidStationsOpen, 'glyphicon-chevron-right': !status.aidStationsOpen}"></i>
-        </accordion-heading>
-        
-        <table class="table table-striped">
+	<accordion >
+	 
+	<accordion-group is-open="status.aidStationsOpen">
+		<accordion-heading> 
+			Aid Stations 
+			<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.aidStationsOpen, 'glyphicon-chevron-right': !status.aidStationsOpen}"></i> 
+		</accordion-heading>
+
+		<div data-ng-controller="AidStationController">
+			<div class="input-group">
+			<form novalidate class="form-horizontal">
+				Name: <input type="text" data-ng-model="aidStation.name"><br> 
+			Distancet: <input type="text" data-ng-model="aidStation.distance"><br>
+			<button class="btn btn-default" data-ng-click="createAidStation(aidStation)">
+				Add
+			</button>
+			<M/form>
+		</div>
+
+		<table class="table table-striped">
 			<thead>
-						<tr>
-							<td align="center"> <b> Aid Station </b> </td>
-							<td align="center"> <b> Distance </b> </td>
-							<td align="center"> <b> Actions </b> </td>
-						</tr>
-					</thead>
-					
-					<tbody data-ng-controller="AidStationController">
-						<tr data-ng-repeat="aidStation in aidStations">
-							<td align="center"> {{ aidStation.name }} </td>
-							<td align="center"> {{ aidStation.distance }} </td>
-							<td align="center">
-								<button class="btn btn-default" ng-click="deleteAidStation(aidStation.id)">
-									<span class="glyphicon glyphicon-trash"></span>
-								</button>
-							</td>
-						<tr>
-					</tbody>
-        </table>
-        
-    </accordion-group>
-    
-    <accordion-group is-open="status.categoriesOpen" heading="Dynamic Body Content">
-    	<accordion-heading>
-              Categories
-              <i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.categoriesOpen, 'glyphicon-chevron-right': !status.categoriesOpen}"></i>
-        </accordion-heading>
-     
-    </accordion-group>
-    
-    <accordion-group is-open="status.open">
-        <accordion-heading>
-            Runners 
-			<i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-        </accordion-heading>
-       
-    </accordion-group>
-    
-  </accordion>
-  
-  </div>
+				<tr>
+					<td align="center"><b> Aid Station </b></td>
+					<td align="center"><b> Distance </b></td>
+					<td align="center"><b> Actions </b></td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr data-ng-repeat="aidStation in aidStations">
+					<td align="center">{{ aidStation.name }}</td>
+					<td align="center">{{ aidStation.distance }}</td>
+					<td align="center">
+						<button class="btn btn-default" ng-click="deleteAidStation(aidStation.id)">
+							<span class="glyphicon glyphicon-trash"></span>
+						</button>
+					</td>
+				<tr>
+			</tbody>
+		</table>
+	</div>
+
+	</accordion-group> <accordion-group is-open="status.categoriesOpen"> <accordion-heading>
+	Categories <i class="pull-right glyphicon"
+		data-ng-class="{'glyphicon-chevron-down': status.categoriesOpen, 'glyphicon-chevron-right': !status.categoriesOpen}"></i> </accordion-heading> </accordion-group> <accordion-group
+		is-open="status.open"> <accordion-heading> Runners <i class="pull-right glyphicon"
+		data-ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> </accordion-heading> </accordion-group> </accordion>
+
+</div>
