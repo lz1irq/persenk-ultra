@@ -7,6 +7,6 @@
 	<Realm className="org.apache.catalina.realm.DataSourceRealm"
 		dataSourceName="jdbc/persenk-ultra" userTable="Users" userNameCol="username"
 		userCredCol="password" localDataSource="true" userRoleTable="Users"
-		roleNameCol="username" />
+		roleNameCol="role" />
 
 </Context>

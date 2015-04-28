@@ -18,6 +18,11 @@
 							<td align="center"> {{runner.name}} </td>
 							<td align="center"> {{runner.category.shortName}} </td>
 							<td align="center" data-ng-repeat="timeEntry in runner.times"> {{timeEntry.time | date: 'd.MM HH:mm'}} </td>
+							<td align="center"> 
+								<button class="btn btn-default" data-ng-click="addRunnerTime(runner)">
+									<span class="glyphicon glyphicon-plus"></span>
+								</button>
+							</td> 
 						<tr>
 					</tbody>
 				</table>

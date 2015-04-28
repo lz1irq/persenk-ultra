@@ -9,8 +9,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
+import com.persenkultra.times.model.Role;
 import com.persenkultra.times.model.User;
 import com.persenkultra.times.service.Services;
 import com.persenkultra.times.service.UserService;
@@ -18,9 +21,25 @@ import com.persenkultra.times.service.UserService;
 @Path("users")
 public class UserRest {
 	private final UserService userService;
-
+	@Context SecurityContext context;
+	
+	
 	public UserRest() {
 		userService = Services.getUserService();
+	}
+	
+	@GET
+	@Path("/isAdmin")
+	@Produces({MediaType.APPLICATION_JSON})
+	public boolean isAdmin() {
+		return context.isUserInRole(Role.ADMINISTRATOR.toString());
+	}
+	
+	@GET
+	@Path("/isVolunteer")
+	@Produces({MediaType.APPLICATION_JSON})
+	public boolean isVolunteer() {
+		return context.isUserInRole(Role.VOLUNTEER.toString());
 	}
 
 	@GET
@@ -34,6 +53,7 @@ public class UserRest {
 	@Path("/{userId}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public User getUser(@PathParam("userId") long userId) {
+		SecurityContext c;
 		return userService.getUser(userId);
 	}
 
