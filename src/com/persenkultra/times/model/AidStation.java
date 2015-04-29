@@ -1,11 +1,15 @@
 package com.persenkultra.times.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -22,6 +26,9 @@ public class AidStation {
 
 	@Column(nullable = false)
 	private int distance;
+	
+	@OneToMany(mappedBy="aidStation")
+	private List<TimeEntry> timeEntries = new LinkedList<TimeEntry>();
 
 	public long getId() {
 		return id;

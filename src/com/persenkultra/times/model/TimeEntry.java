@@ -27,6 +27,9 @@ public class TimeEntry {
 	@ManyToOne()
 	private Runner runner;
 	
+	@ManyToOne()
+	private AidStation aidStation;
+	
 	public long getId() {
 		return id;
 	}
