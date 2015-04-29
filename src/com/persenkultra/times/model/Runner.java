@@ -55,6 +55,7 @@ public class Runner {
 		this.name = name;
 	}
 	
+	@XmlTransient
 	public List<TimeEntry> getTimes() {
 		return times;
 	}

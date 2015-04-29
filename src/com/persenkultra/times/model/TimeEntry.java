@@ -23,13 +23,21 @@ public class TimeEntry {
 
 	@Column(nullable = false)
 	private Timestamp time;
-		
+	
 	@ManyToOne()
 	private Runner runner;
 	
 	@ManyToOne()
 	private AidStation aidStation;
-	
+		
+	public AidStation getAidStation() {
+		return aidStation;
+	}
+
+	public void setAidStation(AidStation aidStation) {
+		this.aidStation = aidStation;
+	}
+		
 	public long getId() {
 		return id;
 	}
@@ -46,7 +54,7 @@ public class TimeEntry {
 		this.time = time;
 	}
 	
-	@XmlTransient
+	
 	public Runner getRunner() {
 		return runner;
 	}
