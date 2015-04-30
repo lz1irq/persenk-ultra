@@ -21,6 +21,10 @@ public class AidStation {
 	@GeneratedValue
 	private long id;
 
+	@Column(nullable = false)
+	private int number;
+	
+	
 	@Column(nullable = false, length = 50)
 	private String name;
 
@@ -52,6 +56,14 @@ public class AidStation {
 
 	public void setDistance(int distance) {
 		this.distance = distance;
+	}
+	
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 }
