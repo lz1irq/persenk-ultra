@@ -11,8 +11,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.persenkultra.times.model.AidStation;
 import com.persenkultra.times.model.Runner;
 import com.persenkultra.times.model.TimeEntry;
+import com.persenkultra.times.service.AidStationService;
 import com.persenkultra.times.service.RunnerService;
 import com.persenkultra.times.service.Services;
 import com.persenkultra.times.service.TimeEntryService;
@@ -21,10 +23,12 @@ import com.persenkultra.times.service.TimeEntryService;
 public class TimeEntryRest {
 	private final TimeEntryService entryService;
 	private final RunnerService runnerService;
+	private final AidStationService stationService;
 
 	public TimeEntryRest() {
 		entryService = Services.getTimeEntryService();
 		runnerService = Services.getRunnerService();
+		stationService = Services.getAidStationService();
 	}
 
 	@GET
@@ -45,9 +49,15 @@ public class TimeEntryRest {
 	@Path("/")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public TimeEntry createTimeEntry(TimeEntry entry) {
+		
 		long runnerId = entry.getRunner().getId();
 		Runner runner = runnerService.getRunner(runnerId);
 		entry.setRunner(runner);
+		
+		long aidStationId = entry.getAidStation().getId();
+		AidStation station = stationService.getAidStation(aidStationId);
+		entry.setAidStation(station);
+		
 		return entryService.createTimeEntry(entry);
 	}
 
