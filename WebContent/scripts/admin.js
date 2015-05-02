@@ -69,6 +69,46 @@ $(document).ready(function() {
 		})
 	}
 
+	$('#createStationButton').on('click', function(event) {
+
+		event.preventDefault(); // stop the page from reloading
+
+		var stationNumber = $('#stationNumberField').val();
+		var stationName = $('#stationNameField').val();
+		var stationDistance = $('#stationDistanceField').val();
+
+		if (stationNumber != '' && stationName != '' && stationDistance != '') {
+			var newAidStation = {
+				number : stationNumber,
+				name : stationName,
+				distance : stationDistance
+			}
+			api.aidStations.createAidStation(newAidStation, function(data) {
+				console.log(data);
+			})
+		}
+	});
+
+	$('#createCategoryButton').on('click', function(event) {
+		event.preventDefault(); // stop the page from reloading
+
+		var categoryName = $('#categoryNameField').val();
+		var categoryShortName = $('#categoryShortNameField').val();
+
+		console.log(categoryShortName);
+		console.log(categoryName);
+		
+		if (categoryName != '' && categoryShortName != '') {
+			var newCategory = {
+				name : categoryName,
+				shortName : categoryShortName
+			}
+			api.Categories.createCategory(newCategory, function(data) {
+				console.log(data);
+			})
+		}
+	});
+
 	api.aidStations.getAidStations(listAidStations);
 	api.Categories.getCategories(listCategories);
 	api.Runners.getRunners(listRunners);

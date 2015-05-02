@@ -23,7 +23,24 @@ api.aidStations.getAidStations = function(callback) {
 			}
 		}
 	});
+}
 
+api.aidStations.createAidStation = function(aidStation, callback) {
+	var request = $.ajax({
+		url : aidStationURL,
+		method : 'POST',
+		dataType : 'json',
+		data : JSON.stringify(aidStation),
+		headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		success : function(data, status, jqXHR) {
+			if (callback !== undefined) {
+				callback(data);
+			}
+		}
+	});
 }
 
 api.Runners.getRunners = function(callback) {
@@ -57,6 +74,24 @@ api.Categories.getCategories = function(callback) {
 		url : categoryURL,
 		method : 'GET',
 		dataType : "json",
+		success : function(data, status, jqXHR) {
+			if (callback !== undefined) {
+				callback(data);
+			}
+		}
+	});	
+}
+
+api.Categories.createCategory = function(newCategory, callback) {
+	var request = $.ajax({
+		url : categoryURL,
+		method : 'POST',
+		dataType : 'json',
+		data : JSON.stringify(newCategory),
+		headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
 		success : function(data, status, jqXHR) {
 			if (callback !== undefined) {
 				callback(data);
