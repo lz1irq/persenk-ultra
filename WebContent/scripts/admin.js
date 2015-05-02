@@ -9,8 +9,13 @@ $(document).ready(function() {
 
 	var categoryCounter = 0;
 	
+	var removeRunner = function(runnerId) {
+		
+	}
+	
 	var appendRunner = function(holder, runner) {
 		var runnerRow = $('<tr/>');
+		runnerRow.attr('data-runner-id', runner.id);
 
 		var numberField = $('<td/>').html(runner.id);
 		numberField.addClass('centeredText');
@@ -23,7 +28,20 @@ $(document).ready(function() {
 		var categoryField = $('<td/>').html(runner.category.name);
 		categoryField.addClass('centeredText');
 		runnerRow.append(categoryField);
-
+		
+		var deleteButtonField = $('<td/>').addClass('centeredText');
+		var deleteButton = $('<button/>').addClass('button button-default');
+		deleteButton.html($('<span/>').addClass('glyphicon glyphicon-trash'));
+		
+		deleteButton.on('click', function() {
+			api.Runners.deleteRunner(runner.id, function() {
+				$('[data-runner-id=' + runner.id + ']').remove();
+			})
+		});
+		
+		deleteButtonField.append(deleteButton);
+		runnerRow.append(deleteButtonField);
+		
 		runnerHolder.append(runnerRow);
 	}
 
