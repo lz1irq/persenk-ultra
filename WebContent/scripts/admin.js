@@ -9,13 +9,18 @@ $(document).ready(function() {
 
 	var categoryCounter = 0;
 	
-	var removeRunner = function(runnerId) {
+	var createDeleteButton = function(clickCallback) {
+		var deleteButton = $('<button/>').addClass('button button-default');
+		deleteButton.html($('<span/>').addClass('glyphicon glyphicon-trash'));
 		
-	}
+		if(clickCallback !== undefined) deleteButton.on('click', clickCallback);
+		
+		return deleteButton;
+	}	
 	
 	var appendRunner = function(holder, runner) {
 		var runnerRow = $('<tr/>');
-		runnerRow.attr('data-runner-id', runner.id);
+		runnerRow.attr('data-runner-id', runner.id); //used for dynamic removal from the table
 
 		var numberField = $('<td/>').html(runner.id);
 		numberField.addClass('centeredText');
@@ -33,13 +38,12 @@ $(document).ready(function() {
 		var deleteButton = $('<button/>').addClass('button button-default');
 		deleteButton.html($('<span/>').addClass('glyphicon glyphicon-trash'));
 		
-		deleteButton.on('click', function() {
+		deleteButtonField.append(createDeleteButton(function() {
+			console.log('delee');
 			api.Runners.deleteRunner(runner.id, function() {
 				$('[data-runner-id=' + runner.id + ']').remove();
 			})
-		});
-		
-		deleteButtonField.append(deleteButton);
+		}));
 		runnerRow.append(deleteButtonField);
 		
 		runnerHolder.append(runnerRow);
@@ -58,6 +62,8 @@ $(document).ready(function() {
 		var distanceField = $('<td/>').html(station.distance);
 		distanceField.addClass('centeredText');
 		stationRow.append(distanceField);
+		
+		
 
 		holder.append(stationRow);
 	};
@@ -176,6 +182,7 @@ $(document).ready(function() {
 			}
 			api.Runners.createRunner(newRunner, function(runner) {
 				appendRunner(runnerHolder, runner);
+				 $('#runnerNameField').val(''); //clear the fields in the html
 			});
 		}
 	});
