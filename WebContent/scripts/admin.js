@@ -1,55 +1,65 @@
 $(document).ready(function() {
 	"use strict"
 
+	var runnerHolder = $('#runnersTable tbody');
+	var stationHolder = $('#stationsTable tbody');
+	var categoryHolder = $('#categoriesTable tbody');
+	
+	var categoryCounter = 0;
+
+	var appendAidStation = function(holder, station) {
+		var stationRow = $('<tr/>');
+		var numberField = $('<td/>').html(station.number);
+		numberField.addClass('centeredText');
+		stationRow.append(numberField);
+
+		var nameField = $('<td/>').html(station.name);
+		nameField.addClass('centeredText');
+		stationRow.append(nameField);
+
+		var distanceField = $('<td/>').html(station.distance);
+		distanceField.addClass('centeredText');
+		stationRow.append(distanceField);
+
+		holder.append(stationRow);
+	}
+
+	var appendCategory = function(holder, category) {
+		
+		categoryCounter++;
+		
+		var categoryRow = $('<tr/>');
+
+		var numberField = $('<td/>').html(categoryCounter);
+		numberField.addClass('centeredText');
+		categoryRow.append(numberField);
+
+		var nameField = $('<td/>').html(category.name);
+		nameField.addClass('centeredText');
+		categoryRow.append(nameField);
+
+		var distanceField = $('<td/>').html(category.shortName);
+		distanceField.addClass('centeredText');
+		categoryRow.append(distanceField);
+
+		categoryHolder.append(categoryRow);
+		
+		
+	}
+
 	var listAidStations = function(stations) {
-		var stationHolder = $('#stationsTable tbody');
-
 		$.each(stations, function(index, station) {
-			var stationRow = $('<tr/>');
-
-			var numberField = $('<td/>').html(station.number);
-			numberField.addClass('centeredText');
-			stationRow.append(numberField);
-
-			var nameField = $('<td/>').html(station.name);
-			nameField.addClass('centeredText');
-			stationRow.append(nameField);
-
-			var distanceField = $('<td/>').html(station.distance);
-			distanceField.addClass('centeredText');
-
-			stationRow.append(distanceField);
-
-			stationHolder.append(stationRow);
-
+			appendAidStation(stationHolder, station);
 		});
 	};
 
 	var listCategories = function(categories) {
-		var categoryHolder = $('#categoriesTable tbody');
-
 		$.each(categories, function(index, category) {
-			var categoryRow = $('<tr/>');
-
-			var numberField = $('<td/>').html(index + 1);
-			numberField.addClass('centeredText');
-			categoryRow.append(numberField);
-
-			var nameField = $('<td/>').html(category.name);
-			nameField.addClass('centeredText');
-			categoryRow.append(nameField);
-
-			var distanceField = $('<td/>').html(category.shortName);
-			distanceField.addClass('centeredText');
-			categoryRow.append(distanceField);
-
-			categoryHolder.append(categoryRow);
+			appendCategory(categoryHolder, category);
 		})
 	};
 
 	var listRunners = function(runners) {
-		var runnerHolder = $('#runnersTable tbody');
-
 		$.each(runners, function(index, runner) {
 			var runnerRow = $('<tr/>');
 
@@ -70,7 +80,6 @@ $(document).ready(function() {
 	}
 
 	$('#createStationButton').on('click', function(event) {
-
 		event.preventDefault(); // stop the page from reloading
 
 		var stationNumber = $('#stationNumberField').val();
@@ -83,8 +92,9 @@ $(document).ready(function() {
 				name : stationName,
 				distance : stationDistance
 			}
-			api.aidStations.createAidStation(newAidStation, function(data) {
-				console.log(data);
+			api.aidStations.createAidStation(newAidStation, function(station) {
+				console.log(station)
+				appendAidStation(stationHolder, station);
 			})
 		}
 	});
@@ -97,14 +107,14 @@ $(document).ready(function() {
 
 		console.log(categoryShortName);
 		console.log(categoryName);
-		
+
 		if (categoryName != '' && categoryShortName != '') {
 			var newCategory = {
 				name : categoryName,
 				shortName : categoryShortName
 			}
-			api.Categories.createCategory(newCategory, function(data) {
-				console.log(data);
+			api.Categories.createCategory(newCategory, function(category) {
+				appendCategory(categoryHolder, category);
 			})
 		}
 	});
