@@ -4,8 +4,28 @@ $(document).ready(function() {
 	var runnerHolder = $('#runnersTable tbody');
 	var stationHolder = $('#stationsTable tbody');
 	var categoryHolder = $('#categoriesTable tbody');
-	
+
+	var categoryDropdown = $('#runnerCategoryField');
+
 	var categoryCounter = 0;
+	
+	var appendRunner = function(holder, runner) {
+		var runnerRow = $('<tr/>');
+
+		var numberField = $('<td/>').html(runner.id);
+		numberField.addClass('centeredText');
+		runnerRow.append(numberField);
+
+		var nameField = $('<td/>').html(runner.name);
+		nameField.addClass('centeredText');
+		runnerRow.append(nameField);
+
+		var categoryField = $('<td/>').html(runner.category.name);
+		categoryField.addClass('centeredText');
+		runnerRow.append(categoryField);
+
+		runnerHolder.append(runnerRow);
+	}
 
 	var appendAidStation = function(holder, station) {
 		var stationRow = $('<tr/>');
@@ -22,12 +42,12 @@ $(document).ready(function() {
 		stationRow.append(distanceField);
 
 		holder.append(stationRow);
-	}
+	};
 
 	var appendCategory = function(holder, category) {
-		
+		// add category to table
 		categoryCounter++;
-		
+
 		var categoryRow = $('<tr/>');
 
 		var numberField = $('<td/>').html(categoryCounter);
@@ -43,9 +63,15 @@ $(document).ready(function() {
 		categoryRow.append(distanceField);
 
 		categoryHolder.append(categoryRow);
-		
-		
-	}
+
+		// add category to dropdown menu for creating a new runner
+		var categoryOption = $('<option/>');
+		categoryOption.val(category.name);
+		categoryOption.html(category.name);
+		categoryOption.attr('data-category-id', category.id);
+		categoryDropdown.append(categoryOption);
+
+	};
 
 	var listAidStations = function(stations) {
 		$.each(stations, function(index, station) {
@@ -61,23 +87,9 @@ $(document).ready(function() {
 
 	var listRunners = function(runners) {
 		$.each(runners, function(index, runner) {
-			var runnerRow = $('<tr/>');
-
-			var numberField = $('<td/>').html(runner.id);
-			numberField.addClass('centeredText');
-			runnerRow.append(numberField);
-
-			var nameField = $('<td/>').html(runner.name);
-			nameField.addClass('centeredText');
-			runnerRow.append(nameField);
-
-			var categoryField = $('<td/>').html(runner.category.name);
-			categoryField.addClass('centeredText');
-			runnerRow.append(categoryField);
-
-			runnerHolder.append(runnerRow);
+			appendRunner(runnerHolder, runner);
 		})
-	}
+	};
 
 	$('#createStationButton').on('click', function(event) {
 		event.preventDefault(); // stop the page from reloading
@@ -91,13 +103,18 @@ $(document).ready(function() {
 				number : stationNumber,
 				name : stationName,
 				distance : stationDistance
-			}
+			};
+			
 			api.aidStations.createAidStation(newAidStation, function(station) {
-				console.log(station)
 				appendAidStation(stationHolder, station);
 			})
 		}
 	});
+
+	var getCategoryIdByName = function(name) {
+		var categoryRow = $('[value="' + name + '"]');
+		return categoryRow.attr('data-category-id');
+	};
 
 	$('#createCategoryButton').on('click', function(event) {
 		event.preventDefault(); // stop the page from reloading
@@ -105,17 +122,43 @@ $(document).ready(function() {
 		var categoryName = $('#categoryNameField').val();
 		var categoryShortName = $('#categoryShortNameField').val();
 
-		console.log(categoryShortName);
-		console.log(categoryName);
-
 		if (categoryName != '' && categoryShortName != '') {
+
+			var categoryId = getCategoryIdByName(categoryName);
+
 			var newCategory = {
 				name : categoryName,
-				shortName : categoryShortName
-			}
+				shortName : categoryShortName,
+				category : {
+					id : categoryId
+				}
+			};
+			
 			api.Categories.createCategory(newCategory, function(category) {
 				appendCategory(categoryHolder, category);
 			})
+		}
+	});
+
+	$('#createRunnerButton').on('click', function(event) {
+		event.preventDefault(); // stop the page from reloading
+
+		var runnerName = $('#runnerNameField').val();
+		var runnerCategoryName = $('#runnerCategoryField').val();
+		
+		var category = {
+				id : getCategoryIdByName(runnerCategoryName)
+		};
+
+		if (runnerName != '' && runnerCategoryName != '') {
+			var newRunner = {
+				name : runnerName,
+				category : category,
+				times : []
+			}
+			api.Runners.createRunner(newRunner, function(runner) {
+				appendRunner(runnerHolder, runner);
+			});
 		}
 	});
 

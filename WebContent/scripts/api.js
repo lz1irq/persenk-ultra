@@ -56,6 +56,24 @@ api.Runners.getRunners = function(callback) {
 	});
 }
 
+api.Runners.createRunner = function(runner, callback) {
+	var request = $.ajax({
+		url : runnerURL,
+		method : 'POST',
+		dataType : 'json',
+		data : JSON.stringify(runner),
+		headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		success : function(data, status, jqXHR) {
+			if (callback !== undefined) {
+				callback(data);
+			}
+		}
+	});	
+}
+
 api.TimeEntries.getTimeEntries = function(callback) {
 	var request = $.ajax({
 		url : timeURL,
