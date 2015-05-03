@@ -56,8 +56,15 @@ public class RunnerRest {
 
 	@PUT
 	@Path("/{runnerId}")
+	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Runner updateRunner(@PathParam("runnerId") long runnerId, Runner runner) {
+		if(runner.getCategory() != null) {
+			long categoryId = runner.getCategory().getId();
+			Category newCategory = categoryService.getCategory(categoryId);
+			runner.setCategory(newCategory);
+		}
+		
 		return runnerService.updateRunner(runnerId, runner);
 	}
 

@@ -58,8 +58,8 @@ public class RunnerService {
 			tx.begin();
 			final Runner fromDb = em.find(Runner.class, runnerId);
 			if (fromDb != null) {
-				fromDb.setName(runner.getName());
-				fromDb.setCategory(runner.getCategory());
+				if(runner.getName() != null) fromDb.setName(runner.getName());
+				if(runner.getCategory() != null) fromDb.setCategory(runner.getCategory());
 				em.merge(fromDb);
 			}
 			tx.commit();
