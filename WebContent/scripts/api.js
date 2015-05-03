@@ -116,7 +116,7 @@ api.Runners.deleteRunner = function(runnerId, callback) {
 
 api.TimeEntries.getTimeEntries = function(callback) {
 	var request = $.ajax({
-		url : timeURL,
+		url : api.TimeEntries.timeURL,
 		method : 'GET',
 		dataType : "json",
 		success : function(data, status, jqXHR) {

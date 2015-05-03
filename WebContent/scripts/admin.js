@@ -1,5 +1,14 @@
 $(document).ready(function() {
 	"use strict"
+	
+	$.fn.editable.defaults.ajaxOptions = {
+			type: 'PUT',
+			dataType : 'json',
+			headers: { 
+		        'Accept': 'application/json',
+		        'Content-Type': 'application/json' 
+		    }
+	};
 
 	var runnerHolder = $('#runnersTable tbody');
 	var stationHolder = $('#stationsTable tbody');
@@ -17,6 +26,35 @@ $(document).ready(function() {
 		
 		return deleteButton;
 	}	
+	
+	
+	/* 
+	 * By default, x-editable sends to the server the following object:
+	 * { pk : 1, name : 'name', value : 'newvalue'}
+	 * which does not work with the existing API. The following 
+	 * function takes the default parameter variable and alters it
+	 * appropriately - the server is only being sent a { variable : value} object.
+	 * It also formats the object to proper JSON.
+	 * */
+	var prepareEditParameters = function(params) {
+		var parameters = {};
+		parameters[params.name] = params.value;
+		console.log(parameters);
+		return JSON.stringify(parameters);
+	}
+	
+	var makeEditable = function(ftype, fname, furl) {
+		return {
+		    type: ftype,
+		    name : fname,
+		    url: furl,
+		    send : 'always',
+		    params: function(params) { 
+		    	console.log(params);
+		    	return prepareEditParameters(params);
+		    }
+		}
+	}
 	
 	var appendRunner = function(holder, runner) {
 		var runnerRow = $('<tr/>');
@@ -47,26 +85,26 @@ $(document).ready(function() {
 	}
 
 	var appendAidStation = function(holder, station) {
+		
+		var stationURL = api.aidStations.stationURL + station.id
+		
 		var stationRow = $('<tr/>');
 		stationRow.attr('data-station-id', station.id);
 		
 		var numberField = $('<td/>').html(station.number);
 		numberField.addClass('centeredText');
-		numberField.editable({
-		    type: 'text',
-		    pk: station.id,
-		    url: '/post',
-		    title: 'Enter username'
-		});
+		numberField.editable(makeEditable('text', 'number', stationURL));
 		
 		stationRow.append(numberField);
 
 		var nameField = $('<td/>').html(station.name);
 		nameField.addClass('centeredText');
+		nameField.editable(makeEditable('text', 'name', stationURL));
 		stationRow.append(nameField);
 
 		var distanceField = $('<td/>').html(station.distance);
 		distanceField.addClass('centeredText');
+		distanceField.editable(makeEditable('text', 'distance', stationURL));
 		stationRow.append(distanceField);
 		
 		var actionField = $('<td/>').addClass('centeredText');

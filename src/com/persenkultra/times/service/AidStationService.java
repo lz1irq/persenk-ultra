@@ -58,8 +58,9 @@ public class AidStationService {
 			tx.begin();
 			final AidStation fromDb = em.find(AidStation.class, stationId);
 			if (fromDb != null) {
-				fromDb.setName(station.getName());
-				fromDb.setDistance(station.getDistance());
+				if(station.getNumber() != 0) fromDb.setNumber(station.getNumber());
+				if(station.getName() != null) fromDb.setName(station.getName());
+				if(station.getDistance() != 0) fromDb.setDistance(station.getDistance());
 				em.merge(fromDb);
 			}
 			tx.commit();
