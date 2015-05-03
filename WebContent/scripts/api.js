@@ -1,20 +1,28 @@
 'use strict'
 
-var apiURL = '/persenk-ultra/api/';
-var aidStationURL = apiURL + 'stations/';
-var runnerURL = apiURL + 'runners/'
-var timeURL = apiURL + 'time/';
-var categoryURL = apiURL + 'categories/';
-
 var api = {}
-api.aidStations = {};
-api.Runners = {};
-api.TimeEntries = {};
-api.Categories = {};
+api.URL = '/persenk-ultra/api/';
+
+api.aidStations = {
+		stationURL : api.URL + 'stations/'
+};
+
+
+api.Runners = {
+		runnerURL : api.URL + 'runners/'
+};
+
+api.TimeEntries = {
+		timeURL : api.URL + 'time/'
+};
+
+api.Categories = {
+		categoryURL : api.URL + 'categories/'
+};
 
 api.aidStations.getAidStations = function(callback) {
 	var request = $.ajax({
-		url : aidStationURL,
+		url : api.aidStations.stationURL,
 		method : 'GET',
 		dataType : "json",
 		success : function(data, status, jqXHR) {
@@ -27,7 +35,7 @@ api.aidStations.getAidStations = function(callback) {
 
 api.aidStations.createAidStation = function(aidStation, callback) {
 	var request = $.ajax({
-		url : aidStationURL,
+		url : api.aidStations.stationURL,
 		method : 'POST',
 		dataType : 'json',
 		data : JSON.stringify(aidStation),
@@ -45,7 +53,7 @@ api.aidStations.createAidStation = function(aidStation, callback) {
 
 api.aidStations.deleteAidStation = function(stationId, callback) {
 	var request = $.ajax({
-		url : aidStationURL + stationId,
+		url : api.aidStations.stationURL + stationId,
 		method : 'DELETE',
 		headers: { 
 	        'Accept': 'application/json',
@@ -61,7 +69,7 @@ api.aidStations.deleteAidStation = function(stationId, callback) {
 
 api.Runners.getRunners = function(callback) {
 	var request = $.ajax({
-		url : runnerURL,
+		url : api.Runners.runnerURL,
 		method : 'GET',
 		dataType : "json",
 		success : function(data, status, jqXHR) {
@@ -74,7 +82,7 @@ api.Runners.getRunners = function(callback) {
 
 api.Runners.createRunner = function(runner, callback) {
 	var request = $.ajax({
-		url : runnerURL,
+		url : api.Runners.runnerURL,
 		method : 'POST',
 		dataType : 'json',
 		data : JSON.stringify(runner),
@@ -92,7 +100,7 @@ api.Runners.createRunner = function(runner, callback) {
 
 api.Runners.deleteRunner = function(runnerId, callback) {
 	var request = $.ajax({
-		url : runnerURL + runnerId,
+		url : api.Runners.runnerURL + runnerId,
 		method : 'DELETE',
 		headers: { 
 	        'Accept': 'application/json',
@@ -121,7 +129,7 @@ api.TimeEntries.getTimeEntries = function(callback) {
 
 api.Categories.getCategories = function(callback) {
 	var request = $.ajax({
-		url : categoryURL,
+		url : api.Categories.categoryURL,
 		method : 'GET',
 		dataType : "json",
 		success : function(data, status, jqXHR) {
@@ -134,7 +142,7 @@ api.Categories.getCategories = function(callback) {
 
 api.Categories.createCategory = function(newCategory, callback) {
 	var request = $.ajax({
-		url : categoryURL,
+		url : api.Categories.categoryURL,
 		method : 'POST',
 		dataType : 'json',
 		data : JSON.stringify(newCategory),
@@ -152,7 +160,7 @@ api.Categories.createCategory = function(newCategory, callback) {
 
 api.Categories.deleteCategory = function(categoryId, callback) {
 	var request = $.ajax({
-		url : categoryURL + categoryId,
+		url : api.Categories.categoryURL + categoryId,
 		method : 'DELETE',
 		headers: { 
 	        'Accept': 'application/json',
