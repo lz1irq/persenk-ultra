@@ -56,8 +56,8 @@ public class CategoryService {
 			tx.begin();
 			final Category fromDb = em.find(Category.class, categoryId);
 			if (fromDb != null) {
-				fromDb.setName(category.getName());
-				fromDb.setShortName(category.getShortName());
+				if(category.getName() != null) fromDb.setName(category.getName());
+				if(category.getShortName() != null) fromDb.setShortName(category.getShortName());
 				em.merge(fromDb);
 			}
 			tx.commit();

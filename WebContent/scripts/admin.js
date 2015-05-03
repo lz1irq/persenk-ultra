@@ -39,7 +39,6 @@ $(document).ready(function() {
 	var prepareEditParameters = function(params) {
 		var parameters = {};
 		parameters[params.name] = params.value;
-		console.log(parameters);
 		return JSON.stringify(parameters);
 	}
 	
@@ -119,7 +118,8 @@ $(document).ready(function() {
 	};
 
 	var appendCategory = function(holder, category) {
-		// add category to table
+		var categoryURL = api.Categories.categoryURL + category.id
+		// add category index to table
 		categoryCounter++;
 
 		var categoryRow = $('<tr/>');
@@ -131,11 +131,13 @@ $(document).ready(function() {
 
 		var nameField = $('<td/>').html(category.name);
 		nameField.addClass('centeredText');
+		nameField.editable(makeEditable('text', 'name', categoryURL));
 		categoryRow.append(nameField);
 
-		var distanceField = $('<td/>').html(category.shortName);
-		distanceField.addClass('centeredText');
-		categoryRow.append(distanceField);
+		var shortNameField = $('<td/>').html(category.shortName);
+		shortNameField.addClass('centeredText');
+		shortNameField.editable(makeEditable('text', 'shortName', categoryURL));
+		categoryRow.append(shortNameField);
 		
 		var actionField = $('<td/>').addClass('centeredText');
 		actionField.append(createDeleteButton(function() {
