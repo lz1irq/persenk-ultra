@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 import com.persenkultra.times.model.AidStation;
+import com.persenkultra.times.model.Category;
 
 public class AidStationService {
 	private final EntityManagerFactory emf;

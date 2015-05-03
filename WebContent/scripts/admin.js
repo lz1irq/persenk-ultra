@@ -34,23 +34,22 @@ $(document).ready(function() {
 		categoryField.addClass('centeredText');
 		runnerRow.append(categoryField);
 		
-		var deleteButtonField = $('<td/>').addClass('centeredText');
-		var deleteButton = $('<button/>').addClass('button button-default');
-		deleteButton.html($('<span/>').addClass('glyphicon glyphicon-trash'));
+		var actionField = $('<td/>').addClass('centeredText');
 		
-		deleteButtonField.append(createDeleteButton(function() {
-			console.log('delee');
+		actionField.append(createDeleteButton(function() {
 			api.Runners.deleteRunner(runner.id, function() {
 				$('[data-runner-id=' + runner.id + ']').remove();
 			})
 		}));
-		runnerRow.append(deleteButtonField);
+		runnerRow.append(actionField);
 		
 		runnerHolder.append(runnerRow);
 	}
 
 	var appendAidStation = function(holder, station) {
 		var stationRow = $('<tr/>');
+		stationRow.attr('data-station-id', station.id);
+		
 		var numberField = $('<td/>').html(station.number);
 		numberField.addClass('centeredText');
 		stationRow.append(numberField);
@@ -63,7 +62,13 @@ $(document).ready(function() {
 		distanceField.addClass('centeredText');
 		stationRow.append(distanceField);
 		
-		
+		var actionField = $('<td/>').addClass('centeredText');
+		actionField.append(createDeleteButton(function() {
+			api.aidStations.deleteAidStation(station.id, function() {
+				$('[data-station-id=' + station.id + ']').remove();
+			});
+		}))
+		stationRow.append(actionField);
 
 		holder.append(stationRow);
 	};
@@ -73,6 +78,7 @@ $(document).ready(function() {
 		categoryCounter++;
 
 		var categoryRow = $('<tr/>');
+		categoryRow.attr('data-category-id', category.id);
 
 		var numberField = $('<td/>').html(categoryCounter);
 		numberField.addClass('centeredText');
@@ -85,6 +91,14 @@ $(document).ready(function() {
 		var distanceField = $('<td/>').html(category.shortName);
 		distanceField.addClass('centeredText');
 		categoryRow.append(distanceField);
+		
+		var actionField = $('<td/>').addClass('centeredText');
+		actionField.append(createDeleteButton(function() {
+			api.Categories.deleteCategory(category.id, function() {
+				$('[data-category-id=' + category.id + ']').remove();
+			})
+		}));
+		categoryRow.append(actionField);
 
 		categoryHolder.append(categoryRow);
 
