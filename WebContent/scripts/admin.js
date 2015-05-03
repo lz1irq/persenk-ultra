@@ -52,6 +52,13 @@ $(document).ready(function() {
 		
 		var numberField = $('<td/>').html(station.number);
 		numberField.addClass('centeredText');
+		numberField.editable({
+		    type: 'text',
+		    pk: station.id,
+		    url: '/post',
+		    title: 'Enter username'
+		});
+		
 		stationRow.append(numberField);
 
 		var nameField = $('<td/>').html(station.name);
@@ -162,14 +169,9 @@ $(document).ready(function() {
 
 		if (categoryName != '' && categoryShortName != '') {
 
-			var categoryId = getCategoryIdByName(categoryName);
-
 			var newCategory = {
 				name : categoryName,
 				shortName : categoryShortName,
-				category : {
-					id : categoryId
-				}
 			};
 			
 			api.Categories.createCategory(newCategory, function(category) {
