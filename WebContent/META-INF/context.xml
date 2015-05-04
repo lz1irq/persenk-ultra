@@ -1,9 +1,11 @@
 <Context debug="9" reloadable="true">
 
 	<Resource name="jdbc/persenk-ultra" auth="Container"
-		type="javax.sql.DataSource" username="persenk" password="persenk" maxActive="100"
-		maxIdle="20" testOnBorrow="true" driverClassName="org.apache.derby.jdbc.ClientDriver"
-		url="jdbc:derby://localhost:1527/persenk-ultra;create=true" />
+		type="javax.sql.DataSource" username="persenk" password="persenk"
+		maxActive="100" maxIdle="20" testOnBorrow="true"
+		driverClassName="org.apache.derby.jdbc.ClientDriver"
+		url="jdbc:derby://localhost:1527/persenk-ultra" />
+		
 	<Realm className="org.apache.catalina.realm.DataSourceRealm"
 		dataSourceName="jdbc/persenk-ultra" userTable="Users" userNameCol="username"
 		userCredCol="password" localDataSource="true" userRoleTable="Users"
