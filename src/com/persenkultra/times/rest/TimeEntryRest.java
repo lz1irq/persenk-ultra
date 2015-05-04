@@ -49,15 +49,19 @@ public class TimeEntryRest {
 	@Path("/")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public TimeEntry createTimeEntry(TimeEntry entry) {
-		
-		long runnerId = entry.getRunner().getId();
-		Runner runner = runnerService.getRunner(runnerId);
-		entry.setRunner(runner);
-		
-		long aidStationId = entry.getAidStation().getId();
-		AidStation station = stationService.getAidStation(aidStationId);
-		entry.setAidStation(station);
-		
+
+		if (entry.getRunner() != null) {
+			long runnerId = entry.getRunner().getId();
+			Runner runner = runnerService.getRunner(runnerId);
+			entry.setRunner(runner);
+		}
+
+		if (entry.getAidStation() != null) {
+			long aidStationId = entry.getAidStation().getId();
+			AidStation station = stationService.getAidStation(aidStationId);
+			entry.setAidStation(station);
+		}
+
 		return entryService.createTimeEntry(entry);
 	}
 

@@ -9,9 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.derby.client.am.DateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity(name = "TimeEntries")
 @NamedQueries({@NamedQuery(name = "allTimeEntries", query = "SELECT te from TimeEntries te")})
@@ -24,6 +24,7 @@ public class TimeEntry {
 	@Column(nullable = false)
 	private Timestamp time;
 	
+	@JsonIgnore
 	@ManyToOne()
 	private Runner runner;
 	
@@ -54,11 +55,12 @@ public class TimeEntry {
 		this.time = time;
 	}
 	
-	@XmlTransient
+	@JsonIgnore
 	public Runner getRunner() {
 		return runner;
 	}
-
+	
+	@JsonProperty
 	public void setRunner(Runner runner) {
 		this.runner = runner;
 	}

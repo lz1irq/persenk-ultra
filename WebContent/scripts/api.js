@@ -127,6 +127,24 @@ api.TimeEntries.getTimeEntries = function(callback) {
 	});
 }
 
+api.TimeEntries.createEntry = function(entry, callback) {
+	var request = $.ajax({
+		url : api.TimeEntries.timeURL,
+		method : 'POST',
+		dataType : 'json',
+		headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		data : JSON.stringify(entry),
+		success : function(data, status, jqXHR) {
+			if (callback !== undefined) {
+				callback(data);
+			}
+		}
+	});
+}
+
 api.Categories.getCategories = function(callback) {
 	var request = $.ajax({
 		url : api.Categories.categoryURL,
