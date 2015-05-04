@@ -1,13 +1,11 @@
 package com.persenkultra.times.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
-import com.persenkultra.times.model.AidStation;
 import com.persenkultra.times.model.TimeEntry;
 
 public class TimeEntryService {
@@ -56,7 +54,7 @@ public class TimeEntryService {
 		final EntityTransaction tx = em.getTransaction();
 		try {
 			tx.begin();
-			final TimeEntry fromDb = em.find(TimeEntry.class, timeEntry);
+			final TimeEntry fromDb = em.find(TimeEntry.class, timeEntryId);
 			if (fromDb != null) {
 				fromDb.setTime(timeEntry.getTime());
 				em.merge(fromDb);

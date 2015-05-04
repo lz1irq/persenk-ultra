@@ -54,7 +54,7 @@ public class TimeEntry {
 		this.time = time;
 	}
 	
-	
+	@XmlTransient
 	public Runner getRunner() {
 		return runner;
 	}
