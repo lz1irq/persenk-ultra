@@ -18,6 +18,22 @@ $(document).ready(function() {
 			'Content-Type' : 'application/json'
 		}
 	};
+	
+	/*dynamically check if the user is logged in by requesting
+	 * a special section of the website and checking if it
+	 * redirects to a login form
+	*/
+	var loggedIn = function(logged, notLogged) {
+		$.get('/persenk-ultra/loggedIn', function (data) {
+			if(data.indexOf('Login') > -1) {
+				if(success !== undefined) success();
+			}
+			else {
+				if(notLogged !== undefined) notLogged();
+			}
+			
+		})
+	}
 
 	var prepareEditParameters = function(params) {
 		var parameters = {};
@@ -139,5 +155,6 @@ $(document).ready(function() {
 
 	api.aidStations.getAidStations(listAidStations);
 	api.Runners.getRunners(listRunners);
+	loggedIn();
 
 });
