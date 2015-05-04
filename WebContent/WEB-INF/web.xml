@@ -31,7 +31,7 @@
 	<security-role>
 		<role-name>ADMINISTRATOR</role-name>
 	</security-role>
-	
+
 	<security-role>
 		<role-name>VOLUNTEER</role-name>
 	</security-role>
@@ -45,6 +45,26 @@
 			<role-name>ADMINISTRATOR</role-name>
 		</auth-constraint>
 	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>AdminAPI</web-resource-name>
+			<url-pattern>/api/runners/*</url-pattern>
+			<url-pattern>/api/categories/*</url-pattern>
+			<url-pattern>/api/stations/*</url-pattern>
+			<url-pattern>/api/users/*</url-pattern>
+			<http-method>DELETE</http-method>
+			<http-method>PUT</http-method>
+			<http-method>HEAD</http-method>
+			<http-method>OPTIONS</http-method>
+			<http-method>TRACE</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>ADMINISTRATOR</role-name>
+		</auth-constraint>
+	</security-constraint>
+
 
 	<login-config>
 		<auth-method>FORM</auth-method>
