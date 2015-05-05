@@ -171,6 +171,52 @@
 				</table>
 			</div>
 		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="panel-title">Users</div>
+			</div>
+			<div class="panel-body">
+
+				<form align="center" role="form" class="form-inline">
+
+					<div class="form-group">
+						<label for="userNameField" class="control-label">Username</label> <input id="userNameField" class="form-control" type="text"><br>
+					</div>
+					
+					<div class="form-group">
+						<label for="userPasswordField" class="control-label">Password</label> <input id="userPasswordField" class="form-control" type="text"><br>
+					</div>
+
+					<div class="form-group">
+						<label for="userRoleField" class="control-label">Role</label> 
+						<select id="userRoleField" class="form-control" type="text">
+							<option value="ADMINISTRATOR">Administrator</option>
+							<option value="VOLUNTEER">Volunteer</option>
+						</select> <br>
+					</div>
+
+					<button class="btn btn-default" id="createUserButton">Add</button>
+				</form>
+				<br />
+
+				<table class="table table-striped" id="usersTable">
+					<thead>
+						<tr>
+							<td align="center"><b>#</b></td>
+							<td align="center"><b>Name</b></td>
+							<td align="center"><b>Password</b></td>
+							<td align="center"><b>Role</b></td>
+							<td align="center"><b>Actions</b></td>
+						</tr>
+					</thead>
+
+					<tbody>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
 
 	</div>
 

@@ -9,7 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @XmlRootElement
 @Entity(name="Users")
@@ -23,7 +25,7 @@ public class User {
 	@Column(nullable = false, length = 50)
 	private String username;
 	
-	@XmlTransient
+	@JsonIgnore
 	@Column(nullable = false, length = 50)
 	private String password;
 	
@@ -55,11 +57,12 @@ public class User {
 		this.username = username;
 	}
 
-	
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
 
+	@JsonProperty
 	public void setPassword(String password) {
 		this.password = password;
 	}

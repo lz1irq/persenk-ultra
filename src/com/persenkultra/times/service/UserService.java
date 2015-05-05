@@ -57,9 +57,9 @@ public class UserService {
 			tx.begin();
 			final User fromDb = em.find(User.class, userId);
 			if (fromDb != null) {
-				fromDb.setUsername(user.getUsername());
-				fromDb.setPassword(user.getPassword());
-				fromDb.setRole(user.getRole());
+				if(user.getUsername() != null) fromDb.setUsername(user.getUsername());
+				if(user.getPassword() != null) fromDb.setPassword(user.getPassword());
+				if(user.getRole() != null)fromDb.setRole(user.getRole());
 				em.merge(fromDb);
 			}
 			tx.commit();

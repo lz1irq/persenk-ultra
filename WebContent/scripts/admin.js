@@ -13,6 +13,7 @@ $(document).ready(function() {
 	var runnerHolder = $('#runnersTable tbody');
 	var stationHolder = $('#stationsTable tbody');
 	var categoryHolder = $('#categoriesTable tbody');
+	var userHolder = $('#usersTable tbody');
 
 	var categoryDropdown = $('#runnerCategoryField');
 
@@ -98,7 +99,9 @@ $(document).ready(function() {
 
 			params : function(params) {
 				var output = {}
-				output.category = { id : getCategoryIdByName(params.value) }
+				output.category = {
+					id : getCategoryIdByName(params.value)
+				}
 				return JSON.stringify(output);
 			}
 		});
@@ -210,6 +213,49 @@ $(document).ready(function() {
 		})
 	};
 
+	var appendUser = function(holder, user) {
+		var userRow = $('<tr/>').attr('data-user-id', user.id);
+		var userURL = api.Users.userURL + user.id;
+		
+		var idField = $('<td/>').addClass('centeredText');
+		idField.html(user.id);
+		userRow.append(idField);
+
+		var usernameField = $('<td/>').addClass('centeredText');
+		usernameField.html(user.username);
+		usernameField.editable(makeEditable('text', 'username', userURL));
+		userRow.append(usernameField);
+
+		var passwordField = $('<td/>').addClass('centeredText');
+		passwordField.html('*');
+		passwordField.editable(makeEditable('text', 'password', userURL));
+		userRow.append(passwordField);
+		
+		var roleField = $('<td/>').addClass('centeredText');
+		roleField.html(user.role);
+		roleField.editable(makeEditable('select', 'role', userURL, function(editable) {
+			editable.source = ['ADMINISTRATOR','VOLUNTEER']
+		}));
+		userRow.append(roleField);
+
+		var actionField = $('<td/>').addClass('centeredText');
+		var delBtn = createDeleteButton(function() {
+			api.Users.deleteUser(user.id, function() {
+				$('[data-user-id=' + user.id + ']').remove();
+			});
+		});
+		actionField.append(delBtn);
+		userRow.append(actionField);
+
+		holder.append(userRow);
+	}
+
+	var listUsers = function(users) {
+		$.each(users, function(index, user) {
+			appendUser(userHolder, user);
+		});
+	};
+
 	$('#createStationButton').on('click', function(event) {
 		event.preventDefault(); // stop the page from reloading
 
@@ -272,8 +318,31 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#createUserButton').on('click', function(event) {
+		event.preventDefault(); // stop the page from reloading
+
+		var userName = $('#userNameField').val();
+		var userPassword = $('#userPasswordField').val();
+		var userRole = $('#userRoleField').val();
+
+		if (userName != '' && userPassword != '' && userRole != '') {
+			var newUser = {
+				username : userName,
+				password : userPassword,
+				role : userRole
+			}
+			api.Users.createUser(newUser, function(user) {
+				appendUser(userHolder, user);
+				$('#userNameField').val('');
+				$('#userPasswordField').val('');
+				$('#userRoleField').val('');
+			});
+		}
+	});
+
 	api.aidStations.getAidStations(listAidStations);
 	api.Categories.getCategories(listCategories);
 	api.Runners.getRunners(listRunners);
+	api.Users.getUsers(listUsers);
 
 });

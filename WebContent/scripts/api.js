@@ -20,6 +20,57 @@ api.Categories = {
 		categoryURL : api.URL + 'categories/'
 };
 
+api.Users = {
+		userURL : api.URL + 'users/'
+}
+
+api.Users.getUsers = function(callback) {
+	var request = $.ajax({
+		url : api.Users.userURL,
+		method : 'GET',
+		dataType : "json",
+		success : function(data, status, jqXHR) {
+			if (callback !== undefined) {
+				callback(data);
+			}
+		}
+	});
+}
+
+api.Users.deleteUser = function(userId, callback) {
+	var request = $.ajax({
+		url : api.Users.userURL + userId,
+		method : 'DELETE',
+		headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		success : function(data, status, jqXHR) {
+			if (callback !== undefined) {
+				callback(data);
+			}
+		}
+	});	
+};
+
+api.Users.createUser = function(user, callback) {
+	var request = $.ajax({
+		url : api.Users.userURL,
+		method : 'POST',
+		dataType : 'json',
+		data : JSON.stringify(user),
+		headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		success : function(data, status, jqXHR) {
+			if (callback !== undefined) {
+				callback(data);
+			}
+		}
+	});
+}
+
 api.aidStations.getAidStations = function(callback) {
 	var request = $.ajax({
 		url : api.aidStations.stationURL,

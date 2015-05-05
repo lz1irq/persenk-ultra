@@ -64,7 +64,7 @@ public class UserRest {
 	}
 
 	@DELETE
-	@Path("/{stationId}")
+	@Path("/{userId}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public void deleteUser(@PathParam("userId") long userId) {
 		userService.deleteUser(userId);
