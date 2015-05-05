@@ -2,6 +2,7 @@ package com.persenkultra.times.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,7 +14,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
-import com.persenkultra.times.model.Role;
 import com.persenkultra.times.model.User;
 import com.persenkultra.times.service.Services;
 import com.persenkultra.times.service.UserService;
@@ -29,17 +29,9 @@ public class UserRest {
 	}
 	
 	@GET
-	@Path("/isAdmin")
-	@Produces({MediaType.APPLICATION_JSON})
-	public boolean isAdmin() {
-		return context.isUserInRole(Role.ADMINISTRATOR.toString());
-	}
-	
-	@GET
-	@Path("/isVolunteer")
-	@Produces({MediaType.APPLICATION_JSON})
-	public boolean isVolunteer() {
-		return context.isUserInRole(Role.VOLUNTEER.toString());
+	@Path("/logout")
+	public void logout(@Context HttpServletRequest request) {
+		request.getSession().invalidate();
 	}
 
 	@GET

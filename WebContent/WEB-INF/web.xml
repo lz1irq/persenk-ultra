@@ -85,7 +85,7 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>LoggedInCheck</web-resource-name>
-			<url-pattern>/loggedIn</url-pattern>
+			<url-pattern>/loggedIn.html</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>ADMINISTRATOR</role-name>

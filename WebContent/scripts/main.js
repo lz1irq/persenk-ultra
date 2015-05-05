@@ -23,10 +23,10 @@ $(document).ready(function() {
 	 * a special section of the website and checking if it
 	 * redirects to a login form
 	*/
-	var loggedIn = function(logged, notLogged) {
-		$.get('/persenk-ultra/loggedIn', function (data) {
-			if(data.indexOf('Login') > -1) {
-				if(success !== undefined) success();
+	var loggedIn = function(loggedIn, notLogged) {
+		$.get('/persenk-ultra/loggedIn.html', function (data) {
+			if(data.indexOf('Login') == -1) {
+				if(loggedIn !== undefined) loggedIn();
 			}
 			else {
 				if(notLogged !== undefined) notLogged();
@@ -127,7 +127,11 @@ $(document).ready(function() {
 			appendTimeEntry(entryHolder, time);
 			numEntries++;
 		})
-		appendAddEntryButton(entryHolder, runner);
+		
+		loggedIn(function() {
+			appendAddEntryButton(entryHolder, runner); //show the option to add time entries only if the user is logged in
+		});
+		
 	}
 
 	var appendRunner = function(holder, runner) {
@@ -152,9 +156,23 @@ $(document).ready(function() {
 			appendRunner(holder, runner);
 		});
 	}
+	
+	loggedIn(function() {
+		var logout = $('<li/>');
+		logout.html('<a href="">Logout</a>');
+		logout.on('click', function() {
+			$.get('api/users/logout', function() {
+				location.reload();
+			})
+		});
+		$('.menu-links').append(logout);
+	}, function() {
+		var login = $('<li/>');
+		login.html('<a href=login.html>Login</a>');
+		$('.menu-links').append(login);
+	});
 
 	api.aidStations.getAidStations(listAidStations);
 	api.Runners.getRunners(listRunners);
-	loggedIn();
 
 });
