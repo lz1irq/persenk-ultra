@@ -25,7 +25,7 @@ $(document).ready(function() {
 	*/
 	var loggedIn = function(loggedIn, notLogged) {
 		$.get('/persenk-ultra/loggedIn.html', function (data) {
-			if(data.indexOf('Login') == -1) {
+			if(data.indexOf('Form') == -1) {
 				if(loggedIn !== undefined) loggedIn();
 			}
 			else {
