@@ -1,6 +1,45 @@
-Login Form
-<form method="post" action="j_security_check" >
-    <input type="text" name="j_username" >
-    <input type="password" name="j_password" >
-    <input type="submit">Login</input>
-</form>
+<html>
+
+<head>
+
+<link href="css/persenk.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/persenk.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+<div class="container login-form">
+		<div class="row top-row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 align="center" class="panel-title">Login Form</h4>
+					</div>
+					<div class="panel-body text-center">
+						<form method="post" action="j_security_check">
+							<input class="form-control" placeholder="Username" type="text" name="j_username">
+							<br>
+							<input class="form-control" placeholder="Password" type="password" name="j_password">
+							<br> 
+							<input class="btn btn-default" type="submit"></input>
+							<br>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+
+	</div>
+
+
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+
+</body>
+
+</html>
+
