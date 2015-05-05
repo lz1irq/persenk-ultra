@@ -2,7 +2,7 @@ $(document).ready(function() {
 	"use strict"
 	
 	var numAidStations = 0;
-	var numEntries = 0;
+	var numEntries = [];
 
 	$.fn.editable.defaults.mode = 'popup';
 	
@@ -94,7 +94,7 @@ $(document).ready(function() {
 	}
 	
 	var appendAddEntryButton = function(entryHolder, runner) {
-		if(numEntries < numAidStations) {
+		if(numEntries[runner.id] < numAidStations) {
 			var newEntryField = $('<td/>').addClass('centeredText');
 			var newEntryButton = $('<button/>').addClass('button button-default');
 			newEntryButton.html('<span class="glyphicon glyphicon-plus">');
@@ -103,9 +103,9 @@ $(document).ready(function() {
 				
 				newEntryButton.off('click');
 				
-				numEntries++;
+				numEntries[runner.id]++;
 				var newEntry = {
-						aidStation : { id : numEntries},
+						aidStation : { id : numEntries[runner.id]},
 						time : new Date().getTime(),
 						runner : { id : runner.id }
 				}
@@ -122,10 +122,11 @@ $(document).ready(function() {
 
 	var listTimeEntries = function(runner) {
 		var entryHolder = $('[data-runner-id=' + runner.id + ']');
+		numEntries[runner.id] = 0;
 		
 		$.each(runner.times, function(index, time) {
 			appendTimeEntry(entryHolder, time);
-			numEntries++;
+			numEntries[runner.id]++;
 		})
 		
 		loggedIn(function() {
