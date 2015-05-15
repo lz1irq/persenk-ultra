@@ -88,8 +88,9 @@ $(document).ready(function() {
 	var appendTimeEntry = function(holder, time) {
 		var timeField = $('<td/>').addClass('centeredText');
 		timeField.html(formatDate(time.time));
-		timeField.editable(makeEditableDate('time', api.TimeEntries.timeURL + time.id));
-
+		loggedIn(function() {
+			timeField.editable(makeEditableDate('time', api.TimeEntries.timeURL + time.id));
+		});
 		holder.append(timeField);
 	}
 	
